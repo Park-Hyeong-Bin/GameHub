@@ -6,6 +6,6 @@ plugins {
 
 }
 dependencies {
-    implementation platform('com.google.firebase:firebase-bom:31.3.0')
+    //implementation platform('com.google.firebase:firebase-bom:31.3.0')
     classpath 'com.google.gms:google-services:4.3.15'
 }
