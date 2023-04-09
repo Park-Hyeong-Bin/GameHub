@@ -29,18 +29,29 @@ class SignupActivity : AppCompatActivity(){
         setContentView(binding.root)
 
         binding.signup.setOnClickListener{
+            val email = binding.username.text.toString()
             val passwordtext = binding.password.text.toString()
             val passwordtextConfirm = binding.passwordconfirm.text.toString()
-            if (passwordtext == passwordtextConfirm){
-                if(flag == 0){
-                    val email = binding.username.text.toString()
-                    CoroutineScope(Dispatchers.Main).launch {
-                        if(Firebase.auth.currentUser == null){
-                            Firebase.auth.createUserWithEmailAndPassword(email, passwordtext).await()
-                        }
-                        //usersCollectionRef.document(email).set(userMap)
-                        doLogin(email, passwordtext)
+            if (email.isEmpty() || !email.contains("@")) {
+                Toast.makeText(this,"올바른 email을 입력해주세요",Toast.LENGTH_SHORT).show()
+                flag = 1
+            } else if (passwordtext.isEmpty()) {
+                Toast.makeText(this,"password를 입력해주세요",Toast.LENGTH_SHORT).show()
+                flag = 1
+            } else if (passwordtextConfirm.isEmpty()) {
+                Toast.makeText(this,"password확인을 입력해주세요",Toast.LENGTH_SHORT).show()
+                flag = 1
+            } else if (passwordtext != passwordtextConfirm) {
+                Toast.makeText(this,"비밀번호를 똑같이 입력해 주세요",Toast.LENGTH_SHORT).show()
+                flag = 1
+            }
+            if(flag == 0){
+                CoroutineScope(Dispatchers.Main).launch {
+                    if(Firebase.auth.currentUser == null){
+                        Firebase.auth.createUserWithEmailAndPassword(email, passwordtext).await()
                     }
+                    //usersCollectionRef.document(email).set(userMap)
+                    doLogin(email, passwordtext)
                 }
             }
         }
