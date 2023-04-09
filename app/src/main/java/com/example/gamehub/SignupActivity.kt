@@ -15,13 +15,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-
 class SignupActivity : AppCompatActivity(){
     private val db : FirebaseFirestore = Firebase.firestore
     //private val usersCollectionRef = db.collection("users")
     val database = Firebase.database
     private lateinit var binding: ActivitySignupBinding
-    var flag = 0
+    private var flag = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +28,7 @@ class SignupActivity : AppCompatActivity(){
         setContentView(binding.root)
 
         binding.signup.setOnClickListener{
+            flag = 0
             val email = binding.username.text.toString()
             val passwordtext = binding.password.text.toString()
             val passwordtextConfirm = binding.passwordconfirm.text.toString()
