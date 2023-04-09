@@ -50,6 +50,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="signup"
-        app:layout_constraintStart_toStartOf="@+id/password"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/passwordconfirm" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="72dp"
+        android:layout_height="42dp"
+        android:text="confirm"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/password"
+        app:layout_constraintTop_toBottomOf="@+id/password" />
+
+    <EditText
+        android:id="@+id/passwordconfirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="password again"
+        android:inputType="textPassword"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/password" />
 </androidx.constraintlayout.widget.ConstraintLayout>
