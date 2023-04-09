@@ -21,6 +21,10 @@ class LoginActivity : AppCompatActivity(){
             if(userEmail != "" && password != "")
                 doLogin(userEmail, password)
         }
+        binding.signup.setOnClickListener {
+            startActivity(Intent(this, SignupActivity::class.java))
+            finish()
+        }
     }
 
     private fun doLogin(userEmail: String, password: String){
