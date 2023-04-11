@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">GameHub</string>
+    <string name="id">ID</string>
+    <string name="password">password</string>
+    <string name="email">Email:</string>
+    <string name="Password">Password</string>
+    <string name="signup">signup</string>
+    <string name="confirm">confirm</string>
+    <string name="password_again">password again</string>
+    <string name="gender">gender</string>
+    <string name="birth">birth</string>
+    <string name="name">name</string>
+    <string name="input_your_name">Input Your Name</string>
 </resources>
