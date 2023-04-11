@@ -13,7 +13,6 @@ import com.google.firebase.ktx.Firebase
 class MyPageFragment : Fragment() {
 
     private lateinit var binding: FragmentMypageBinding
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

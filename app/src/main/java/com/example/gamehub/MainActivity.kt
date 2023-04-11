@@ -31,19 +31,19 @@ class MainActivity : AppCompatActivity() {
         initBottomNavigation()
     }
     private fun initBottomNavigation() {
-        setCurrentFragment(homeFragment)
+        setCurrentFragment(R.id.main_container, homeFragment)
         binding.bottomNavi.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.action_home -> setCurrentFragment(homeFragment)
-                R.id.action_find -> setCurrentFragment(findFragment)
-                R.id.action_mypage -> setCurrentFragment(myPageFragment)
+                R.id.action_home -> setCurrentFragment(R.id.main_container, homeFragment)
+                R.id.action_find -> setCurrentFragment(R.id.main_container, findFragment)
+                R.id.action_mypage -> setCurrentFragment(R.id.main_container, myPageFragment)
             }
             return@setOnItemSelectedListener true
         }
     }
-    private fun setCurrentFragment(fragment : Fragment)
+    private fun setCurrentFragment(id: Int, fragment : Fragment)
     = supportFragmentManager.beginTransaction().apply {
-        replace(R.id.fl_container,fragment)
+        replace(id,fragment)
         commit()
     }
 }
