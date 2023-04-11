@@ -10,7 +10,7 @@ import com.example.gamehub.databinding.FragmentPreferenceBinding
 
 class PreferenceFragment : Fragment() {
     private lateinit var binding: FragmentPreferenceBinding
-
+    private lateinit var intent: Intent
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -18,11 +18,17 @@ class PreferenceFragment : Fragment() {
         binding = FragmentPreferenceBinding.inflate(inflater, container, false)
 
         binding.next.setOnClickListener {
-            startActivity(Intent(this.activity, MainActivity::class.java))
+            intent = Intent(this.activity, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
+
         binding.skip.setOnClickListener {
-            startActivity(Intent(this.activity, MainActivity::class.java))
+            intent = Intent(this.activity, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
+
         return binding.root
     }
 }
