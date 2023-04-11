@@ -1,7 +1,9 @@
 package com.example.gamehub
 
+import android.content.Intent
 import java.util.*
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +23,7 @@ class SignFragment : Fragment() {
 
     private lateinit var binding: FragmentSignBinding
     private lateinit var preferenceFragment: PreferenceFragment
-    private val db : FirebaseFirestore = Firebase.firestore
+    private val db: FirebaseFirestore = Firebase.firestore
     private val usersCollectionRef = db.collection("user")
     private var flag = 0
     private lateinit var mActivity: SignupActivity
@@ -33,7 +35,6 @@ class SignFragment : Fragment() {
         binding = FragmentSignBinding.inflate(inflater, container, false)
 
         preferenceFragment = PreferenceFragment()
-
         mActivity = this.activity as SignupActivity
 
         val birth = binding.birth
@@ -82,14 +83,26 @@ class SignFragment : Fragment() {
                     "gender" to gender
                 )
                 CoroutineScope(Dispatchers.Main).launch {
-                    if(Firebase.auth.currentUser == null){
+                    if (Firebase.auth.currentUser == null) {
                         Firebase.auth.createUserWithEmailAndPassword(email, passwordtext).await()
                     }
                     usersCollectionRef.document(email).set(userMap)
-                    mActivity.setCurrentFragment(R.id.signup_container, preferenceFragment)
+                    doLogin(email, passwordtext)
                 }
             }
         }
         return binding.root
+    }
+
+    private fun doLogin(userEmail: String, password: String) {
+        Firebase.auth.signInWithEmailAndPassword(userEmail, password)
+            .addOnCompleteListener(mActivity) {
+                if (it.isSuccessful) {
+                    mActivity.setCurrentFragment(R.id.signup_container, preferenceFragment)
+                } else {
+                    Log.w("SignupActivity", "signInWithEmailAndPassword", it.exception)
+                    Toast.makeText(mActivity, "Login Failed", Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 }
