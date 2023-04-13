@@ -21,7 +21,9 @@ class MyPageFragment : Fragment() {
 
         binding.logout.setOnClickListener {
             Firebase.auth.signOut()
-            startActivity(Intent(this.activity, LoginActivity::class.java))
+            val intent = Intent(this.activity, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
 
         return binding.root
