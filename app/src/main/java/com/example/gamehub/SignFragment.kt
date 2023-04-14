@@ -1,6 +1,5 @@
 package com.example.gamehub
 
-import android.content.Intent
 import java.util.*
 import android.os.Bundle
 import android.util.Log
@@ -98,6 +97,12 @@ class SignFragment : Fragment() {
         Firebase.auth.signInWithEmailAndPassword(userEmail, password)
             .addOnCompleteListener(mActivity) {
                 if (it.isSuccessful) {
+                    val bundle = Bundle()
+                    bundle.putString("activity", "SIGN")
+                    bundle.putString("type", "POSITIVE")
+                    preferenceFragment = PreferenceFragment()
+                    preferenceFragment.arguments = bundle
+
                     mActivity.setCurrentFragment(R.id.signup_container, preferenceFragment)
                 } else {
                     Log.w("SignupActivity", "signInWithEmailAndPassword", it.exception)

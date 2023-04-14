@@ -26,6 +26,9 @@
         <activity
             android:name=".SignupActivity"
             android:exported="false"/>
+        <activity
+            android:name=".TagActivity"
+            android:exported="false"/>
         <uses-library android:name="org.apache.http.legacy" android:required="false" />
     </application>
 
