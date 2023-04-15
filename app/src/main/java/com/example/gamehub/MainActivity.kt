@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
             return@setOnItemSelectedListener true
         }
     }
-    private fun setCurrentFragment(id: Int, fragment : Fragment)
+    fun setCurrentFragment(id: Int, fragment : Fragment)
     = supportFragmentManager.beginTransaction().apply {
         replace(id,fragment)
         commit()

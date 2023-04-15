@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_myPageFragment_to_suggestFragment"
             app:destination="@id/suggestFragment" />
+        <action
+            android:id="@+id/action_myPageFragment_to_placeholder"
+            app:destination="@id/placeholder" />
     </fragment>
     <fragment
         android:id="@+id/suggestFragment"
@@ -36,5 +39,10 @@
         <action
             android:id="@+id/action_suggestFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment android:id="@+id/placeholder" >
+        <action
+            android:id="@+id/action_placeholder_to_myPageFragment"
+            app:destination="@id/myPageFragment" />
     </fragment>
 </navigation>

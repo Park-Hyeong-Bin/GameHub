@@ -1,5 +1,6 @@
 package com.example.gamehub
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,7 +20,7 @@ class MyPageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMypageBinding.inflate(inflater, container, false)
-        mainActivity = MainActivity()
+
         preferenceFragment = PreferenceFragment()
 
         binding.logout.setOnClickListener {
@@ -30,17 +31,24 @@ class MyPageFragment : Fragment() {
         }
 
         binding.positive.setOnClickListener {
-            val intent = Intent(this.activity, TagActivity::class.java)
-            intent.putExtra("type", "POSITIVE")
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
+            val bundle = Bundle()
+            bundle.putString("activity", "MAIN")
+            bundle.putString("type", "POSITIVE")
+            preferenceFragment.arguments = bundle
+            mainActivity.setCurrentFragment(R.id.main_container, preferenceFragment)
         }
         binding.negative.setOnClickListener {
-            val intent = Intent(this.activity, TagActivity::class.java)
-            intent.putExtra("type", "NEGATIVE")
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
+            val bundle = Bundle()
+            bundle.putString("activity", "MAIN")
+            bundle.putString("type", "NEGATIVE")
+            preferenceFragment.arguments = bundle
+            mainActivity.setCurrentFragment(R.id.main_container, preferenceFragment)
         }
         return binding.root
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mainActivity = context as MainActivity
     }
 }

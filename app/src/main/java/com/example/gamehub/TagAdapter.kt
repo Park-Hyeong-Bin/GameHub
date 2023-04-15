@@ -52,6 +52,5 @@ class TagAdapter : RecyclerView.Adapter<TagAdapter.ViewHolder>(){
                 }
             }
         }
-
     }
 }

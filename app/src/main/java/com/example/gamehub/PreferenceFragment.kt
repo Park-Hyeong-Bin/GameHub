@@ -1,7 +1,6 @@
 package com.example.gamehub
 
 import android.content.ContentValues.TAG
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -17,10 +16,9 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-
 class PreferenceFragment : Fragment() {
     private lateinit var signupActivity: SignupActivity
-    private lateinit var tagActivity: TagActivity
+    private lateinit var mainActivity: MainActivity
     private lateinit var preferenceFragment: PreferenceFragment
     private lateinit var binding: FragmentPreferenceBinding
     private val adapter = TagAdapter()
@@ -28,8 +26,8 @@ class PreferenceFragment : Fragment() {
     private val db = Firebase.firestore
     private val auth = Firebase.auth
     private val id = auth.currentUser?.email
-    private val positive_tag = db.collection("user/$id/positive_tag")
-    private val negative_tag = db.collection("user/$id/negative_tag")
+    private val positiveTag = db.collection("user/$id/positive_tag")
+    private val negativeTag = db.collection("user/$id/negative_tag")
     private var saveContainer = ""
     private var saveType = ""
     private var count = 0
@@ -75,20 +73,20 @@ class PreferenceFragment : Fragment() {
                     DividerItemDecoration.VERTICAL
                 )
             )
-        } else if(saveContainer == "TAG"){
+        } else if(saveContainer == "MAIN"){
             addData(saveType)
             binding.tagView.layoutManager =
-                LinearLayoutManager(tagActivity, LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
             binding.tagView.adapter = adapter
             binding.tagView.addItemDecoration(
                 DividerItemDecoration(
-                    tagActivity,
+                    mainActivity,
                     DividerItemDecoration.VERTICAL
                 )
             )
             binding.tagView.addItemDecoration(
                 DividerItemDecoration(
-                    tagActivity,
+                    mainActivity,
                     DividerItemDecoration.VERTICAL
                 )
             )
@@ -113,17 +111,17 @@ class PreferenceFragment : Fragment() {
         binding.save.setOnClickListener {
             if(saveType == "POSITIVE") {
                 for (t in tagCK)
-                    positive_tag.document(t).set(hashMapOf("state" to false))
+                    positiveTag.document(t).set(hashMapOf("state" to false))
 
                 for (t in tag)
-                    positive_tag.document(t).set(hashMapOf("state" to true))
+                    positiveTag.document(t).set(hashMapOf("state" to true))
             }
             else if(saveType == "NEGATIVE") {
                 for (t in tagCK)
-                    negative_tag.document(t).set(hashMapOf("state" to false))
+                    negativeTag.document(t).set(hashMapOf("state" to false))
 
                 for (t in tag)
-                    negative_tag.document(t).set(hashMapOf("state" to true))
+                    negativeTag.document(t).set(hashMapOf("state" to true))
             }
             if (saveContainer == "SIGN" && saveType == "POSITIVE") {
                 preferenceFragment = PreferenceFragment()
@@ -198,8 +196,8 @@ class PreferenceFragment : Fragment() {
     private fun attach(type: String) {
         if(type == "SIGN")
             signupActivity = context as SignupActivity
-        else if(type == "TAG")
-            tagActivity = context as TagActivity
+        else if(type == "MAIN")
+            mainActivity = context as MainActivity
     }
 }
 
