@@ -118,6 +118,7 @@ class SignFragment : Fragment() {
     private fun doSignup() {
         val email = binding.signEmail.text.toString()
         val password = binding.signPw.text.toString()
+        val name = binding.signName.text.toString()
         val birth = binding.birth
         val year = birth.year
         val month = birth.month + 1
@@ -125,7 +126,7 @@ class SignFragment : Fragment() {
         val gender = binding.gender.selectedItem.toString()
 
         val userMap = hashMapOf(
-            "name" to binding.signName.text,
+            "name" to name,
             "year" to year,
             "month" to month,
             "day" to day,
