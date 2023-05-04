@@ -28,18 +28,15 @@ class FindFragment : Fragment() {
 
         itemList = arrayListOf()
 
-        // 리사이클러뷰 어댑터 초기화
+
         adapter = FindAdapter(itemList)
         binding.gameView.adapter = adapter
 
-        // 검색창 이벤트 리스너 등록
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            // 검색 버튼 입력 시 호출 (검색 버튼이 없으므로 사용하지 않음)
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
 
-            // 텍스트 입력/수정 시에 호출
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText != null) {
                     searchGames(newText)
@@ -52,10 +49,8 @@ class FindFragment : Fragment() {
     }
 
     private fun searchGames(searchQuery: String) {
-        // 이전 검색 결과 초기화
         itemList.clear()
 
-        // Firestore에서 데이터 검색
         db.collection("game")
             .whereEqualTo("name", searchQuery)
             .get()

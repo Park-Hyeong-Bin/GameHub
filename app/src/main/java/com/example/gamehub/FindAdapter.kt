@@ -22,13 +22,11 @@ class FindAdapter(private val itemList: ArrayList<String>) :
 
     private val storage = Firebase.storage
     private val db = Firebase.firestore
-    // onCreateViewHolder: ViewHolder 객체 생성
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FindViewHolder {
         val binding = HomeItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return FindViewHolder(binding)
     }
 
-    // onBindViewHolder: ViewHolder에 데이터 바인딩
     override fun onBindViewHolder(holder: FindViewHolder, position: Int) {
         val item = itemList[position]
         val gameDB = db.collection("game").document(item).get().addOnSuccessListener {
@@ -43,7 +41,6 @@ class FindAdapter(private val itemList: ArrayList<String>) :
         }
     }
 
-    // getItemCount: 데이터 아이템 개수 반환
     override fun getItemCount(): Int {
         return itemList.size
     }
