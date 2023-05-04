@@ -19,4 +19,6 @@ class FindFragment : Fragment() {
 
         return binding.root
     }
+
+
 }
