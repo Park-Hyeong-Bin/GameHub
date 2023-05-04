@@ -31,8 +31,11 @@ class HomeFragment : Fragment() {
             .collection("positive_tag")
             .whereEqualTo("state", true)
             .get().addOnSuccessListener { documents ->
-                for(document in documents) {
-                    itemList.add(document.id)
+                itemList.add("전체")
+                if(!documents.isEmpty) {
+                    for (document in documents) {
+                        itemList.add(document.id)
+                    }
                 }
                 binding.RecyclerViewHome.adapter = HomeAdapter(itemList)
             }.addOnFailureListener {

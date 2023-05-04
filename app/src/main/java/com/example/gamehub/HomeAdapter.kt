@@ -31,15 +31,28 @@ class HomeAdapter(private var itemList: ArrayList<String>)
 
         binding.tag.text = item + binding.tag.text
 
-        db.collection("game")
-            .whereEqualTo("tag", item).get()
-            .addOnSuccessListener {documents ->
-                for (document in documents) {
-                    itemList2.add(document.id)
+        if(item == "전체") {
+            db.collection("game")
+                .get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        itemList2.add(document.id)
+                    }
+                    binding.pager.adapter = ViewPagerAdapter(itemList2)
+                }.addOnFailureListener {
                 }
-                binding.pager.adapter = ViewPagerAdapter(itemList2)
-            }.addOnFailureListener{
-            }
+        }
+        else {
+            db.collection("game")
+                .whereEqualTo("tag", item).get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        itemList2.add(document.id)
+                    }
+                    binding.pager.adapter = ViewPagerAdapter(itemList2)
+                }.addOnFailureListener {
+                }
+        }
     }
 
     override fun getItemCount(): Int{
