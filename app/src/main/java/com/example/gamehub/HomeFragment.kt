@@ -4,22 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gamehub.databinding.FragmentHomeBinding
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-
-
-
 class HomeFragment : Fragment() {
-
     private lateinit var binding: FragmentHomeBinding
-    private var db = Firebase.firestore
-    private var adapter : HomeAdapter? = null
+    private val db = Firebase.firestore
+    private val id = FirebaseAuth.getInstance().currentUser?.email
     private lateinit var  itemList : ArrayList<String>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,29 +24,19 @@ class HomeFragment : Fragment() {
 
         binding.RecyclerViewHome.layoutManager = LinearLayoutManager(context)
 
-
-
         itemList = arrayListOf()
 
-        db = FirebaseFirestore.getInstance()
-
-        db.collection("game").get().addOnSuccessListener {
-            if(!it.isEmpty){
-
-                for(data in it){
-
-
-                   itemList.add(data.id)
+        db.collection("user")
+            .document(id.toString())
+            .collection("positive_tag")
+            .whereEqualTo("state", true)
+            .get().addOnSuccessListener { documents ->
+                for(document in documents) {
+                    itemList.add(document.id)
                 }
                 binding.RecyclerViewHome.adapter = HomeAdapter(itemList)
+            }.addOnFailureListener {
             }
-
-
-        }.addOnFailureListener{
-           //Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
-        }
-
-
         return binding.root
     }
 }

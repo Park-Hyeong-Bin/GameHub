@@ -20,4 +20,14 @@
     <string name="cancel">취소</string>
     <string name="positive">positive</string>
     <string name="negative">negative</string>
+    <string name="recommend">추천 게임</string>
+
+    <string-array name="tag">
+        <item>CCG</item>
+        <item>FPS</item>
+        <item>HORROR</item>
+        <item>MMORPG</item>
+        <item>RPG</item>
+        <item>TRPG</item>
+    </string-array>
 </resources>
