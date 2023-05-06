@@ -1,5 +1,6 @@
 package com.example.gamehub
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -28,35 +29,40 @@ class FindFragment : Fragment() {
 
         itemList = arrayListOf()
 
-
         adapter = FindAdapter(itemList)
+
         binding.gameView.adapter = adapter
 
+        binding.searchView.isSubmitButtonEnabled = true
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
+                if (query != null)
+                    searchGames(query)
+                return true
             }
-
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText != null) {
-                    searchGames(newText)
+                if(newText == null) {
+                    itemList.clear()
+                    adapter.notifyDataSetChanged()
                 }
                 return true
             }
         })
-
         return binding.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun searchGames(searchQuery: String) {
         itemList.clear()
 
         db.collection("game")
-            .whereEqualTo("name", searchQuery)
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
-                    itemList.add(document.id)
+                    if(document.get("name").toString().contains(searchQuery)) {
+                        itemList.add(document.id)
+                        println(searchQuery)
+                    }
                 }
                 adapter.notifyDataSetChanged() // 어댑터 갱신
             }

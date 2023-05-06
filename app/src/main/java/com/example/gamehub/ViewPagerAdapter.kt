@@ -6,16 +6,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.gamehub.databinding.HomeItemBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
 class ViewPagerAdapter(private val itemList: ArrayList<String>) : RecyclerView.Adapter<ViewPagerAdapter.PagerViewHolder>() {
+    private lateinit var binding: HomeItemBinding
     private val storage = Firebase.storage
     private val db = Firebase.firestore
+    private val uid = FirebaseAuth.getInstance().currentUser?.uid.toString()
+    private lateinit var gameFav: DocumentReference
+    private lateinit var favoriteDto: FavoriteDto
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagerViewHolder {
-        val binding = HomeItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding = HomeItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         return PagerViewHolder(binding)
     }
@@ -23,12 +29,11 @@ class ViewPagerAdapter(private val itemList: ArrayList<String>) : RecyclerView.A
 
     override fun onBindViewHolder(holder: PagerViewHolder, position: Int) {
         val item = itemList[position]
+
         db.collection("game").document(item).get().addOnSuccessListener {
             val imagepath = it["imagepath"].toString()
             val imageRef = storage.getReferenceFromUrl("gs://ghub-da878.appspot.com")
-
             val path = imageRef.child(imagepath)
-
             val description = it["description"].toString()
 
             path.downloadUrl.addOnSuccessListener { uri ->
@@ -40,7 +45,51 @@ class ViewPagerAdapter(private val itemList: ArrayList<String>) : RecyclerView.A
             }
             holder.binding.textHomeGame.text = description
         }
+
+        gameFav = db.collection("favorite").document(item)
+
+        db.runTransaction {
+            favoriteDto = it.get(gameFav).toObject(FavoriteDto::class.java)!!
+
+            with(favoriteDto) {
+                if (favorite.containsKey(uid)) {
+                    holder.binding.favorite.setImageResource(R.drawable.favorite)
+                } else {
+                    holder.binding.favorite.setImageResource(R.drawable.favorite_border)
+                }
+                holder.binding.favoriteNumber.text = favorite.size.toString()
+            }
+            it.set(gameFav, favoriteDto)
+            return@runTransaction
+        }
+
+        holder.binding.favorite.setOnClickListener {
+            favoriteDto.favorite.clear()
+            favoriteEvent(holder)
+        }
     }
 
+    private fun favoriteEvent(holder: PagerViewHolder) {
+        db.runTransaction {
+            favoriteDto = it.get(gameFav).toObject(FavoriteDto::class.java)!!
+
+            with(favoriteDto) {
+                if (favorite.containsKey(uid)) {
+                    favorite.remove(uid)
+                    holder.binding.favorite.setImageResource(R.drawable.favorite_border)
+                } else {
+                    favorite[uid] = true
+                    holder.binding.favorite.setImageResource(R.drawable.favorite)
+                }
+                holder.binding.favoriteNumber.text = favorite.size.toString()
+            }
+
+            it.set(gameFav, favoriteDto)
+            return@runTransaction
+        }
+    }
     inner class PagerViewHolder( val binding: HomeItemBinding ) : RecyclerView.ViewHolder(binding.root)
 }
+
+
+
