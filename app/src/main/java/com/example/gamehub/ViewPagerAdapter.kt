@@ -30,6 +30,8 @@ class ViewPagerAdapter(private val itemList: ArrayList<String>) : RecyclerView.A
     override fun onBindViewHolder(holder: PagerViewHolder, position: Int) {
         val item = itemList[position]
 
+        gameFav = db.collection("favorite").document(item)
+
         db.collection("game").document(item).get().addOnSuccessListener {
             val imagepath = it["imagepath"].toString()
             val imageRef = storage.getReferenceFromUrl("gs://ghub-da878.appspot.com")
@@ -45,11 +47,8 @@ class ViewPagerAdapter(private val itemList: ArrayList<String>) : RecyclerView.A
             }
             holder.binding.textHomeGame.text = description
         }
-
-        gameFav = db.collection("favorite").document(item)
-
-        db.runTransaction {
-            favoriteDto = it.get(gameFav).toObject(FavoriteDto::class.java)!!
+        gameFav.get().addOnSuccessListener {
+            favoriteDto = it.toObject(FavoriteDto::class.java)!!
 
             with(favoriteDto) {
                 if (favorite.containsKey(uid)) {
@@ -59,34 +58,24 @@ class ViewPagerAdapter(private val itemList: ArrayList<String>) : RecyclerView.A
                 }
                 holder.binding.favoriteNumber.text = favorite.size.toString()
             }
-            it.set(gameFav, favoriteDto)
-            return@runTransaction
         }
-
         holder.binding.favorite.setOnClickListener {
-            favoriteDto.favorite.clear()
             favoriteEvent(holder)
         }
     }
 
     private fun favoriteEvent(holder: PagerViewHolder) {
-        db.runTransaction {
-            favoriteDto = it.get(gameFav).toObject(FavoriteDto::class.java)!!
-
-            with(favoriteDto) {
-                if (favorite.containsKey(uid)) {
-                    favorite.remove(uid)
-                    holder.binding.favorite.setImageResource(R.drawable.favorite_border)
-                } else {
-                    favorite[uid] = true
-                    holder.binding.favorite.setImageResource(R.drawable.favorite)
-                }
-                holder.binding.favoriteNumber.text = favorite.size.toString()
+        with(favoriteDto) {
+            if (favorite.containsKey(uid)) {
+                favorite.remove(uid)
+                holder.binding.favorite.setImageResource(R.drawable.favorite_border)
+            } else {
+                favorite[uid] = true
+                holder.binding.favorite.setImageResource(R.drawable.favorite)
             }
-
-            it.set(gameFav, favoriteDto)
-            return@runTransaction
+            holder.binding.favoriteNumber.text = favorite.size.toString()
         }
+        gameFav.set(favoriteDto)
     }
     inner class PagerViewHolder( val binding: HomeItemBinding ) : RecyclerView.ViewHolder(binding.root)
 }

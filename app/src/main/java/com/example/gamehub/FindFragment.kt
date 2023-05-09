@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.gamehub.databinding.FragmentFindBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.util.*
+import kotlin.collections.ArrayList
 
 class FindFragment : Fragment() {
 
@@ -36,10 +38,15 @@ class FindFragment : Fragment() {
         binding.searchView.isSubmitButtonEnabled = true
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                if (query != null)
-                    searchGames(query)
+                if (query != null) {
+                    if(query.substring(0 until 1) == "#")
+                        searchTag(query)
+                    else
+                        searchGames(query)
+                }
                 return true
             }
+            @SuppressLint("NotifyDataSetChanged")
             override fun onQueryTextChange(newText: String?): Boolean {
                 if(newText == null) {
                     itemList.clear()
@@ -63,6 +70,27 @@ class FindFragment : Fragment() {
                         itemList.add(document.id)
                         println(searchQuery)
                     }
+                }
+                adapter.notifyDataSetChanged() // 어댑터 갱신
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+            }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun searchTag(searchQuery: String) {
+        itemList.clear()
+
+        val sQ = searchQuery.substring(1).uppercase(Locale.ROOT)
+
+        db.collection("game")
+            .whereEqualTo("tag", sQ)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    itemList.add(document.id)
+                    println(sQ)
                 }
                 adapter.notifyDataSetChanged() // 어댑터 갱신
             }
