@@ -66,7 +66,7 @@ class FindFragment : Fragment() {
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
-                    if(document.get("name").toString().contains(searchQuery)) {
+                    if(document.id.contains(searchQuery, ignoreCase = true)) {
                         itemList.add(document.id)
                         println(searchQuery)
                     }
