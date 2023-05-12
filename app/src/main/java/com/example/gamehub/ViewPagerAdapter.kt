@@ -1,7 +1,10 @@
 package com.example.gamehub
 
+import android.annotation.SuppressLint
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -12,7 +15,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
-class ViewPagerAdapter(private val itemList: ArrayList<String>) : RecyclerView.Adapter<ViewPagerAdapter.PagerViewHolder>() {
+class ViewPagerAdapter(private var itemList: ArrayList<String>) : RecyclerView.Adapter<ViewPagerAdapter.PagerViewHolder>() {
     private lateinit var binding: HomeItemBinding
     private val storage = Firebase.storage
     private val db = Firebase.firestore
@@ -27,8 +30,20 @@ class ViewPagerAdapter(private val itemList: ArrayList<String>) : RecyclerView.A
     }
     override fun getItemCount(): Int = itemList.size
 
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateList(newList: ArrayList<String>) {
+        itemList = newList
+        notifyDataSetChanged()
+    }
+
+
     override fun onBindViewHolder(holder: PagerViewHolder, position: Int) {
         val item = itemList[position]
+
 
         gameFav = db.collection("favorite").document(item)
 
@@ -62,7 +77,26 @@ class ViewPagerAdapter(private val itemList: ArrayList<String>) : RecyclerView.A
         holder.binding.favorite.setOnClickListener {
             favoriteEvent(holder)
         }
+
+        val bundle = Bundle()
+        bundle.putString("id", item)
+
+        holder.binding.imageHomeGame.setOnClickListener {
+            val mainActivity = it!!.context as AppCompatActivity
+            val gameFragment = GameFragment()
+            gameFragment.arguments = bundle
+            mainActivity.supportFragmentManager.beginTransaction().replace(R.id.main_container,gameFragment).commit()
+        }
+        holder.binding.textHomeGame.setOnClickListener {
+            val mainActivity = it!!.context as AppCompatActivity
+            val gameFragment = GameFragment()
+            gameFragment.arguments = bundle
+            mainActivity.supportFragmentManager.beginTransaction().replace(R.id.main_container,gameFragment).commit()
+        }
     }
+
+
+
 
     private fun favoriteEvent(holder: PagerViewHolder) {
         with(favoriteDto) {
@@ -77,6 +111,10 @@ class ViewPagerAdapter(private val itemList: ArrayList<String>) : RecyclerView.A
         }
         gameFav.set(favoriteDto)
     }
+
+
+
+
     inner class PagerViewHolder( val binding: HomeItemBinding ) : RecyclerView.ViewHolder(binding.root)
 }
 
