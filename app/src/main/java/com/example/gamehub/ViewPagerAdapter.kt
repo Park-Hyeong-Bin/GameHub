@@ -14,6 +14,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import java.io.File
 
 class ViewPagerAdapter(private var itemList: ArrayList<String>) : RecyclerView.Adapter<ViewPagerAdapter.PagerViewHolder>() {
     private lateinit var binding: HomeItemBinding
@@ -48,19 +49,31 @@ class ViewPagerAdapter(private var itemList: ArrayList<String>) : RecyclerView.A
         gameFav = db.collection("favorite").document(item)
 
         db.collection("game").document(item).get().addOnSuccessListener {
-            val imagepath = it["imagepath"].toString()
-            val imageRef = storage.getReferenceFromUrl("gs://ghub-da878.appspot.com")
-            val path = imageRef.child(imagepath)
-            val description = it["description"].toString()
+            //val imagepath = it["imagepath"].toString()
+            val imageRef = storage.getReferenceFromUrl("gs://ghub-da878.appspot.com/$item")
+            val mainpath = imageRef.child("profile.PNG")
+            val play1 = imageRef.child("play_1.PNG")
+            val play2 = imageRef.child("play_2.PNG")
+            val play3 = imageRef.child("play_3.PNG")
+            val play4 = imageRef.child("play_4.PNG")
+            //val description = it["description"].toString()
+            val textfile = imageRef.child("description.txt")
+            val localfile = File.createTempFile("description.txt","txt")
+            var description = ""
+            textfile.getFile(localfile).addOnSuccessListener {
+                description = localfile.readText()
+                holder.binding.textHomeGame.text = description
+            }
 
-            path.downloadUrl.addOnSuccessListener { uri ->
+
+            mainpath.downloadUrl.addOnSuccessListener { uri ->
                 Glide.with(holder.binding.imageHomeGame.context)
                     .load(uri)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .centerCrop()
                     .into(holder.binding.imageHomeGame)
             }
-            holder.binding.textHomeGame.text = description
+
         }
         gameFav.get().addOnSuccessListener {
             favoriteDto = it.toObject(FavoriteDto::class.java)!!
