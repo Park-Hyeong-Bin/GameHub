@@ -51,8 +51,6 @@ class ViewPagerAdapter : RecyclerView.Adapter<ViewPagerAdapter.PagerViewHolder>(
             val path = imageRef.child(imagepath)
             val description = it["description"].toString()
 
-            println("$imagepath/$description")
-
             path.downloadUrl.addOnSuccessListener { uri ->
                 println("success")
                 Glide.with(holder.binding.imageHomeGame.context)

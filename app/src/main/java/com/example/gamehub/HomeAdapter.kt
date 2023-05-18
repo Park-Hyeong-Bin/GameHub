@@ -18,11 +18,12 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>(){
     }
     class HomeViewHolder(val binding: PagerItemBinding, val context: Context) :
         RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(item: String) {
             with(binding)
             {
                 val db = Firebase.firestore
-                var itemList2: ArrayList<String> = arrayListOf()
+                val itemList2: ArrayList<String> = arrayListOf()
 
                 binding.tag.text = item + binding.tag.text
 
@@ -34,6 +35,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>(){
                                 itemList2.add(document.id)
                             }
                             binding.pager.adapter = ViewPagerAdapter().build(itemList2)
+                            binding.indicator.setViewPager(binding.pager)
                         }.addOnFailureListener {
                         }
                 }
@@ -45,6 +47,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>(){
                                 itemList2.add(document.id)
                             }
                             binding.pager.adapter = ViewPagerAdapter().build(itemList2)
+                            binding.indicator.setViewPager(binding.pager)
                         }.addOnFailureListener {
                         }
                 }
@@ -65,4 +68,5 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>(){
     override fun getItemCount(): Int{
         return itemList.size
     }
+
 }
