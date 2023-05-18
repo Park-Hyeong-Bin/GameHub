@@ -37,7 +37,7 @@ class HomeFragment : Fragment() {
                         itemList.add(document.id)
                     }
                 }
-                binding.RecyclerViewHome.adapter = HomeAdapter(itemList)
+                binding.RecyclerViewHome.adapter = HomeAdapter().build(itemList)
             }.addOnFailureListener {
             }
         return binding.root
