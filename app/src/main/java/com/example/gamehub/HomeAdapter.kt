@@ -34,7 +34,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>(){
                             for (document in documents) {
                                 itemList2.add(document.id)
                             }
-                            binding.pager.adapter = ViewPagerAdapter().build(itemList2)
+                            binding.pager.adapter = HomePagerAdapter().build(itemList2)
                             binding.indicator.setViewPager(binding.pager)
                         }.addOnFailureListener {
                         }
@@ -46,7 +46,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>(){
                             for (document in documents) {
                                 itemList2.add(document.id)
                             }
-                            binding.pager.adapter = ViewPagerAdapter().build(itemList2)
+                            binding.pager.adapter = HomePagerAdapter().build(itemList2)
                             binding.indicator.setViewPager(binding.pager)
                         }.addOnFailureListener {
                         }

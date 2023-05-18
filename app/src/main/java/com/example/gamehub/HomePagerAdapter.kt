@@ -15,7 +15,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
-class ViewPagerAdapter : RecyclerView.Adapter<ViewPagerAdapter.PagerViewHolder>() {
+class HomePagerAdapter : RecyclerView.Adapter<HomePagerAdapter.PagerViewHolder>() {
     private lateinit var itemList: ArrayList<String>
     private lateinit var binding: HomeItemBinding
     private val storage = Firebase.storage
@@ -24,10 +24,11 @@ class ViewPagerAdapter : RecyclerView.Adapter<ViewPagerAdapter.PagerViewHolder>(
     private lateinit var gameFav: DocumentReference
     private lateinit var favoriteDto: FavoriteDto
 
-    fun build(i : ArrayList<String>): ViewPagerAdapter {
+    fun build(i : ArrayList<String>): HomePagerAdapter {
         itemList = i
         return this
     }
+
     class PagerViewHolder( val binding: HomeItemBinding ) : RecyclerView.ViewHolder(binding.root)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagerViewHolder {
         binding = HomeItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
