@@ -14,6 +14,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import java.io.File
 
 class HomePagerAdapter : RecyclerView.Adapter<HomePagerAdapter.PagerViewHolder>() {
     private lateinit var itemList: ArrayList<String>
@@ -47,20 +48,27 @@ class HomePagerAdapter : RecyclerView.Adapter<HomePagerAdapter.PagerViewHolder>(
         gameFav = db.collection("favorite").document(item)
 
         db.collection("game").document(item).get().addOnSuccessListener {
-            val imagepath = it["imagepath"].toString()
-            val imageRef = storage.getReferenceFromUrl("gs://ghub-da878.appspot.com")
-            val path = imageRef.child(imagepath)
-            val description = it["description"].toString()
+            val imageRef = storage.getReferenceFromUrl("gs://ghub-da878.appspot.com/$item")
+            val path = imageRef.child("profile.PNG")
+            var description = ""
 
             path.downloadUrl.addOnSuccessListener { uri ->
                 println("success")
                 Glide.with(holder.binding.imageHomeGame.context)
                     .load(uri)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .centerCrop()
+
                     .into(holder.binding.imageHomeGame)
             }
+            holder.binding.textHomeGame.text = item
+            /*
             holder.binding.textHomeGame.text = description
+            val textfile = imageRef.child("description.txt")
+            val localfile = File.createTempFile("description.txt","txt")
+            textfile.getFile(localfile).addOnSuccessListener {
+                description = localfile.readText()
+                holder.binding.textHomeGame.text = description
+            }*/
         }
 
         gameFav.get().addOnSuccessListener {
