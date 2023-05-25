@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -30,9 +31,10 @@
         android:id="@+id/textViewName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="TextView"
-        android:textSize="24sp"
+        android:layout_marginStart="24dp"
+        android:hint="title"
+        android:textStyle="bold"
+        android:textSize="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/indicator" />
 
@@ -40,11 +42,80 @@
         android:id="@+id/textViewDes"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="16dp"
-        android:text="TextView"
+        android:layout_marginEnd="24dp"
+        android:hint="description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewName" />
+
+    <TextView
+        android:id="@+id/avgrating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:hint="rating"
+        android:textStyle="bold"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewName"
+        app:layout_constraintStart_toEndOf="@+id/textViewName"
+        app:layout_constraintTop_toTopOf="@+id/textViewName" />
+
+    <RatingBar
+        android:id="@+id/ratingbarStyle"
+        style="@style/Widget.AppCompat.RatingBar.Indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:clickable="true"
+        android:isIndicator="false"
+        android:numStars="5"
+        android:progressTint="#333333"
+        android:stepSize="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDes" />
+
+    <Button
+        android:id="@+id/button_wish"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:drawableTop="@drawable/add"
+        android:text="@string/wish"
+        android:textColor="@color/gray"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ratingbarStyle"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/button_comment"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:drawableTop="@drawable/comment"
+        android:text="@string/comment"
+        android:textColor="@color/gray"
+        app:layout_constraintEnd_toStartOf="@+id/button_play"
+        app:layout_constraintStart_toEndOf="@+id/button_wish"
+        app:layout_constraintTop_toTopOf="@+id/button_wish"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/button_play"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:backgroundTint="@color/white"
+        android:drawableTop="@drawable/play"
+        android:text="@string/playing"
+        android:textColor="@color/gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/button_comment"
+        tools:ignore="MissingConstraints" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

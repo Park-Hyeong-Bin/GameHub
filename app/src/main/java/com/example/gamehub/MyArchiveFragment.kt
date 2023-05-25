@@ -12,8 +12,8 @@ class MyArchiveFragment  : Fragment() {
     private lateinit var binding: FragmentMyarchiveBinding
     private lateinit var myPageFragment: MyPageFragment
     private lateinit var myRatingFragment: MyRatingFragment
-//    private lateinit var myWishlistFragment: MyWishlistFragment
-//    private lateinit var myPlaylistFragment: MyPlaylistFragment
+    private lateinit var myWishlistFragment: MyWishlistFragment
+    private lateinit var myPlaylistFragment: MyPlaylistFragment
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -22,8 +22,8 @@ class MyArchiveFragment  : Fragment() {
         binding = FragmentMyarchiveBinding.inflate(inflater, container, false)
 
         myRatingFragment = MyRatingFragment()
-//        myWishlistFragment = MyWishlistFragment()
-//        myPlaylistFragment = MyPlaylistFragment()
+        myWishlistFragment = MyWishlistFragment()
+        myPlaylistFragment = MyPlaylistFragment()
 
         setCurrentFragment(myRatingFragment)
 
@@ -32,9 +32,9 @@ class MyArchiveFragment  : Fragment() {
                 when (binding.btnsCategory.checkedButtonId) {
                     R.id.button_rating -> setCurrentFragment(myRatingFragment)
 
-//                    R.id.button_wish -> setCurrentFragment(myWishlistFragment)
-//
-//                    R.id.button_play -> setCurrentFragment(myPlaylistFragment)
+                    R.id.button_wish -> setCurrentFragment(myWishlistFragment)
+
+                    R.id.button_play -> setCurrentFragment(myPlaylistFragment)
                 }
             }
         }

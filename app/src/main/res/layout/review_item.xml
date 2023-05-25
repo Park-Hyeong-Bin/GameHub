@@ -23,7 +23,7 @@
 
             <ImageView
                 android:id="@+id/imageHomeGame"
-                android:layout_width="190dp"
+                android:layout_width="200dp"
                 android:layout_height="150dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
@@ -36,7 +36,7 @@
             <TextView
                 android:id="@+id/textHomeGame"
                 android:layout_width="0dp"
-                android:layout_height="102dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
@@ -55,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
                 android:clickable="true"
                 android:isIndicator="false"
                 android:numStars="5"

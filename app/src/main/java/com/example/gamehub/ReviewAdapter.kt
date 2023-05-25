@@ -36,7 +36,6 @@ class ReviewAdapter(private val dataset: ArrayList<String>) : RecyclerView.Adapt
 
         gameRating = db.collection("rating").document(item)
 
-
         val imageRef = storage.getReferenceFromUrl("gs://ghub-da878.appspot.com/$item")
         val path = imageRef.child("profile.PNG")
 
@@ -52,6 +51,7 @@ class ReviewAdapter(private val dataset: ArrayList<String>) : RecyclerView.Adapt
         gameRating.get().addOnSuccessListener {
             ratingDto = it.toObject(RatingDto::class.java)!!
         }
+
         holder.binding.ratingbarStyle.onRatingBarChangeListener = RatingBar.OnRatingBarChangeListener { _, rating, _ ->
             ratingDto.rating[uid] = rating
 

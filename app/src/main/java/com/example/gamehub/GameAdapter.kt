@@ -1,20 +1,19 @@
 package com.example.gamehub
 
 import android.annotation.SuppressLint
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.gamehub.databinding.FavoriteItemBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 
 class GameViewHolder(val binding: FavoriteItemBinding) : RecyclerView.ViewHolder(binding.root)
@@ -43,16 +42,17 @@ class GameAdapter(private val itemList: ArrayList<String>) :
         gameFav = db.collection("favorite").document(item)
         gameRat = db.collection("rating").document(item)
 
-        db.collection("game").document(item).get().addOnSuccessListener {
-            val imagepath = it["imagepath"].toString()
-            val imageRef = storage.getReferenceFromUrl("gs://ghub-da878.appspot.com/${imagepath}")
-            println(imagepath)
-            val description = it["description"].toString()
+        val imageRef = storage.getReferenceFromUrl("gs://ghub-da878.appspot.com/$item")
+        val path = imageRef.child("profile.PNG")
 
-            displayImageRef(imageRef, holder.binding.imageHomeGame)
-            holder.binding.textHomeGame.text = description
-            println(description)
+        path.downloadUrl.addOnSuccessListener { uri ->
+            Glide.with(holder.binding.imageHomeGame.context)
+                .load(uri)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+
+                .into(holder.binding.imageHomeGame)
         }
+        holder.binding.textHomeGame.text = item
 
         gameFav.get().addOnSuccessListener {
             favoriteDto = it.toObject(FavoriteDto::class.java)!!
@@ -130,14 +130,5 @@ class GameAdapter(private val itemList: ArrayList<String>) :
 
     override fun getItemCount(): Int {
         return itemList.size
-    }
-
-    private fun displayImageRef(imageRef: StorageReference?, view: ImageView){
-        imageRef?.getBytes(Long.MAX_VALUE)?.addOnSuccessListener {
-            val bmp = BitmapFactory.decodeByteArray(it, 0, it.size)
-            view.setImageBitmap(bmp)
-        }?.addOnFailureListener {
-            println("Image load failed")
-        }
     }
 }
