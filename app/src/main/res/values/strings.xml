@@ -21,6 +21,15 @@
     <string name="positive">positive</string>
     <string name="negative">negative</string>
     <string name="recommend">추천 게임</string>
+    <string name="rating">평가</string>
+    <string name="comment">코멘트</string>
+    <string name="favorite">즐겨찾기</string>
+    <string name="rating2">평가한</string>
+    <string name="wish">하고싶어요</string>
+    <string name="playing">하는중</string>
+    <string name="tag">장르</string>
+    <string name="like_tag">좋아한 장르</string>
+    <string name="dislike_tag">싫어한 장르</string>
 
     <string-array name="tag">
         <item>CCG</item>

@@ -8,12 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.gamehub.databinding.FragmentMypageBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class MyPageFragment : Fragment() {
     private lateinit var mainActivity: MainActivity
+    private val db = Firebase.firestore
+    private val id = FirebaseAuth.getInstance().currentUser?.email.toString()
     private lateinit var preferenceFragment: PreferenceFragment
+    private lateinit var myArchiveFragment: MyArchiveFragment
+    private lateinit var myFavoriteFragment: MyFavoriteFragment
     private lateinit var binding: FragmentMypageBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -22,6 +28,8 @@ class MyPageFragment : Fragment() {
         binding = FragmentMypageBinding.inflate(inflater, container, false)
 
         preferenceFragment = PreferenceFragment()
+        myArchiveFragment = MyArchiveFragment()
+        myFavoriteFragment = MyFavoriteFragment()
 
         binding.logout.setOnClickListener {
             Firebase.auth.signOut()
@@ -30,20 +38,54 @@ class MyPageFragment : Fragment() {
             startActivity(intent)
         }
 
-        binding.positive.setOnClickListener {
+        binding.rating.setOnClickListener {
+            mainActivity.setCurrentFragment(R.id.main_container, myArchiveFragment)
+        }
+
+        db.collection("user")
+            .document(id)
+            .collection("rating")
+            .get().addOnSuccessListener { documents ->
+                var count = 0
+                for (document in documents) {
+                    if(document.get("rating") != null)
+                        count ++
+                }
+                binding.ratingText.text = count.toString()
+            }
+
+        binding.favorite.setOnClickListener {
+            mainActivity.setCurrentFragment(R.id.main_container, myFavoriteFragment)
+        }
+
+        db.collection("user")
+            .document(id)
+            .collection("favorite")
+            .get().addOnSuccessListener { documents ->
+                var count = 0
+                for (document in documents) {
+                    if(document.get("state") != null)
+                        count ++
+                }
+                binding.favoriteText.text = count.toString()
+            }
+
+        binding.likeTag.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("activity", "MAIN")
             bundle.putString("type", "POSITIVE")
             preferenceFragment.arguments = bundle
             mainActivity.setCurrentFragment(R.id.main_container, preferenceFragment)
         }
-        binding.negative.setOnClickListener {
+
+        binding.dilikeTag.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("activity", "MAIN")
             bundle.putString("type", "NEGATIVE")
             preferenceFragment.arguments = bundle
             mainActivity.setCurrentFragment(R.id.main_container, preferenceFragment)
         }
+
         return binding.root
     }
 

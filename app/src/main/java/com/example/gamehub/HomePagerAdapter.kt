@@ -21,11 +21,13 @@ class HomePagerAdapter : RecyclerView.Adapter<HomePagerAdapter.PagerViewHolder>(
     private lateinit var binding: HomeItemBinding
     private val storage = Firebase.storage
     private val db = Firebase.firestore
+    private val id = FirebaseAuth.getInstance().currentUser?.email.toString()
     private val uid = FirebaseAuth.getInstance().currentUser?.uid.toString()
     private lateinit var gameFav: DocumentReference
     private lateinit var gameRat: DocumentReference
     private lateinit var favoriteDto: FavoriteDto
     private lateinit var ratingDto: RatingDto
+    private lateinit var item: String
 
     fun build(i : ArrayList<String>): HomePagerAdapter {
         itemList = i
@@ -46,7 +48,7 @@ class HomePagerAdapter : RecyclerView.Adapter<HomePagerAdapter.PagerViewHolder>(
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: PagerViewHolder, position: Int) {
-        val item = itemList[position]
+        item = itemList[position]
 
         gameFav = db.collection("favorite").document(item)
         gameRat = db.collection("rating").document(item)
@@ -114,19 +116,24 @@ class HomePagerAdapter : RecyclerView.Adapter<HomePagerAdapter.PagerViewHolder>(
     }
 
     private fun favoriteEvent(holder: PagerViewHolder) {
+        val map = HashMap<String, Boolean>()
         with(favoriteDto) {
             if (favorite.containsKey(uid)) {
                 favorite.remove(uid)
+                map.remove("state")
                 holder.binding.favorite.setImageResource(R.drawable.favorite_border)
             } else {
                 favorite[uid] = true
+                map["state"] = true
                 holder.binding.favorite.setImageResource(R.drawable.favorite)
             }
             holder.binding.favoriteNumber.text = favorite.size.toString()
         }
         gameFav.set(favoriteDto)
+        db.collection("user")
+            .document(id)
+            .collection("favorite")
+            .document(item)
+            .set(map)
     }
 }
-
-
-

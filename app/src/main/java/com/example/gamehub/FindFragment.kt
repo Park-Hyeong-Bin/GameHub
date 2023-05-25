@@ -20,7 +20,6 @@ class FindFragment : Fragment() {
     private lateinit var binding: FragmentFindBinding
     private val db = Firebase.firestore
     private var itemList = ArrayList<String>()
-    private lateinit var adapter: FindAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,9 +30,7 @@ class FindFragment : Fragment() {
 
         itemList = arrayListOf()
 
-        adapter = FindAdapter(itemList)
-
-        binding.gameView.adapter = adapter
+        binding.gameView.adapter = GameAdapter(itemList)
 
         binding.searchView.isSubmitButtonEnabled = true
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -50,7 +47,7 @@ class FindFragment : Fragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 if(newText == null) {
                     itemList.clear()
-                    adapter.notifyDataSetChanged()
+                    binding.gameView.adapter = GameAdapter(itemList)
                 }
                 return true
             }
@@ -68,10 +65,9 @@ class FindFragment : Fragment() {
                 for (document in documents) {
                     if(document.id.contains(searchQuery, ignoreCase = true)) {
                         itemList.add(document.id)
-                        println(searchQuery)
                     }
                 }
-                adapter.notifyDataSetChanged() // 어댑터 갱신
+                binding.gameView.adapter = GameAdapter(itemList)
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)
@@ -90,9 +86,8 @@ class FindFragment : Fragment() {
             .addOnSuccessListener { documents ->
                 for (document in documents) {
                     itemList.add(document.id)
-                    println(sQ)
                 }
-                adapter.notifyDataSetChanged() // 어댑터 갱신
+                binding.gameView.adapter = GameAdapter(itemList)
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)

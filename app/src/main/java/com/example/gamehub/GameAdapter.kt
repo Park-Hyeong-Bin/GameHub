@@ -2,11 +2,14 @@ package com.example.gamehub
 
 import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
+import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.gamehub.databinding.HomeItemBinding
+import com.example.gamehub.databinding.FavoriteItemBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
@@ -14,30 +17,29 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 
+class GameViewHolder(val binding: FavoriteItemBinding) : RecyclerView.ViewHolder(binding.root)
 
-class FindViewHolder(val binding: HomeItemBinding ) : RecyclerView.ViewHolder(binding.root)
+class GameAdapter(private val itemList: ArrayList<String>) :
+    RecyclerView.Adapter<GameViewHolder>() {
 
-
-
-class FindAdapter(private val itemList: ArrayList<String>) :
-    RecyclerView.Adapter<FindViewHolder>() {
-
-    private val uid = FirebaseAuth.getInstance().currentUser?.uid.toString()
     private val storage = Firebase.storage
     private val db = Firebase.firestore
+    private val id = FirebaseAuth.getInstance().currentUser?.email.toString()
+    private val uid = FirebaseAuth.getInstance().currentUser?.uid.toString()
     private lateinit var favoriteDto: FavoriteDto
     private lateinit var gameFav: DocumentReference
     private lateinit var ratingDto: RatingDto
     private lateinit var gameRat: DocumentReference
+    private lateinit var item: String
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FindViewHolder {
-        val binding = HomeItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return FindViewHolder(binding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
+        val binding = FavoriteItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return GameViewHolder(binding)
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(holder: FindViewHolder, position: Int) {
-        val item = itemList[position]
+    override fun onBindViewHolder(holder: GameViewHolder, position: Int) {
+        item = itemList[position]
         gameFav = db.collection("favorite").document(item)
         gameRat = db.collection("rating").document(item)
 
@@ -87,20 +89,44 @@ class FindAdapter(private val itemList: ArrayList<String>) :
         holder.binding.favorite.setOnClickListener {
             favoriteEvent(holder)
         }
+
+        val listener : View.OnClickListener = View.OnClickListener { v ->
+            val bundle = Bundle()
+            bundle.putString("id", item)
+            val mainActivity = v!!.context as AppCompatActivity
+            val gameFragment = GameFragment()
+            gameFragment.arguments = bundle
+            mainActivity.supportFragmentManager.beginTransaction().replace(R.id.main_container,gameFragment).commit()
+        }
+
+        holder.binding.imageHomeGame.setOnClickListener(listener)
+        holder.binding.textHomeGame.setOnClickListener(listener)
+        holder.binding.favorite.setOnClickListener {
+            favoriteEvent(holder)
+        }
     }
 
-    private fun favoriteEvent(holder: FindViewHolder) {
+    private fun favoriteEvent(holder: GameViewHolder) {
+        val map = HashMap<String, Boolean>()
         with(favoriteDto) {
             if (favorite.containsKey(uid)) {
                 favorite.remove(uid)
+                map.remove("state")
                 holder.binding.favorite.setImageResource(R.drawable.favorite_border)
             } else {
                 favorite[uid] = true
+                map["state"] = true
                 holder.binding.favorite.setImageResource(R.drawable.favorite)
             }
             holder.binding.favoriteNumber.text = favorite.size.toString()
         }
         gameFav.set(favoriteDto)
+        gameFav.set(favoriteDto)
+        db.collection("user")
+            .document(id)
+            .collection("favorite")
+            .document(item)
+            .set(map)
     }
 
     override fun getItemCount(): Int {
@@ -114,6 +140,5 @@ class FindAdapter(private val itemList: ArrayList<String>) :
         }?.addOnFailureListener {
             println("Image load failed")
         }
-
     }
 }

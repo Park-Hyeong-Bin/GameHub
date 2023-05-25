@@ -20,6 +20,7 @@ class PreferenceFragment : Fragment() {
     private lateinit var signupActivity: SignupActivity
     private lateinit var mainActivity: MainActivity
     private lateinit var preferenceFragment: PreferenceFragment
+    private lateinit var myPageFragment: MyPageFragment
     private lateinit var binding: FragmentPreferenceBinding
     private val adapter = TagAdapter()
     private val dataSet = ArrayList<List<String>>()
@@ -39,7 +40,6 @@ class PreferenceFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentPreferenceBinding.inflate(inflater, container, false)
-
 
         if (arguments != null) {
             saveContainer = arguments?.getString("activity").toString()
@@ -135,7 +135,8 @@ class PreferenceFragment : Fragment() {
                 startActivity(Intent(this.activity, MainActivity::class.java))
         }
         binding.cancel.setOnClickListener {
-            startActivity(Intent(this.activity, MainActivity::class.java))
+            myPageFragment = MyPageFragment()
+            mainActivity.setCurrentFragment(R.id.main_container, myPageFragment)
         }
         return binding.root
     }
