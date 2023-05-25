@@ -1,5 +1,6 @@
 package com.example.gamehub
 
+import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -26,15 +27,20 @@ class FindAdapter(private val itemList: ArrayList<String>) :
     private val db = Firebase.firestore
     private lateinit var favoriteDto: FavoriteDto
     private lateinit var gameFav: DocumentReference
+    private lateinit var ratingDto: RatingDto
+    private lateinit var gameRat: DocumentReference
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FindViewHolder {
         val binding = HomeItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return FindViewHolder(binding)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: FindViewHolder, position: Int) {
         val item = itemList[position]
         gameFav = db.collection("favorite").document(item)
+        gameRat = db.collection("rating").document(item)
+
         db.collection("game").document(item).get().addOnSuccessListener {
             val imagepath = it["imagepath"].toString()
             val imageRef = storage.getReferenceFromUrl("gs://ghub-da878.appspot.com/${imagepath}")
@@ -58,6 +64,26 @@ class FindAdapter(private val itemList: ArrayList<String>) :
                 holder.binding.favoriteNumber.text = favorite.size.toString()
             }
         }
+
+        gameRat.get().addOnSuccessListener {
+            ratingDto = it.toObject(RatingDto::class.java)!!
+
+            with(ratingDto) {
+                var sum = 0F
+                for(rat in rating) {
+                    sum += rat.value
+                }
+
+                if(rating.isEmpty())
+                    holder.binding.imageView.setImageResource(R.drawable.star2)
+
+                else {
+                    holder.binding.rating.text = (sum / rating.size).toString()
+                    holder.binding.ratingCount.text = "(${rating.size})"
+                }
+            }
+        }
+
         holder.binding.favorite.setOnClickListener {
             favoriteEvent(holder)
         }
