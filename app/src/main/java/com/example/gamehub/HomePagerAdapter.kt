@@ -1,5 +1,6 @@
 package com.example.gamehub
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +15,6 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import java.io.File
 
 class HomePagerAdapter : RecyclerView.Adapter<HomePagerAdapter.PagerViewHolder>() {
     private lateinit var itemList: ArrayList<String>
@@ -23,7 +23,9 @@ class HomePagerAdapter : RecyclerView.Adapter<HomePagerAdapter.PagerViewHolder>(
     private val db = Firebase.firestore
     private val uid = FirebaseAuth.getInstance().currentUser?.uid.toString()
     private lateinit var gameFav: DocumentReference
+    private lateinit var gameRat: DocumentReference
     private lateinit var favoriteDto: FavoriteDto
+    private lateinit var ratingDto: RatingDto
 
     fun build(i : ArrayList<String>): HomePagerAdapter {
         itemList = i
@@ -42,18 +44,18 @@ class HomePagerAdapter : RecyclerView.Adapter<HomePagerAdapter.PagerViewHolder>(
         return position
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: PagerViewHolder, position: Int) {
         val item = itemList[position]
 
         gameFav = db.collection("favorite").document(item)
+        gameRat = db.collection("rating").document(item)
 
         db.collection("game").document(item).get().addOnSuccessListener {
             val imageRef = storage.getReferenceFromUrl("gs://ghub-da878.appspot.com/$item")
             val path = imageRef.child("profile.PNG")
-            var description = ""
 
             path.downloadUrl.addOnSuccessListener { uri ->
-                println("success")
                 Glide.with(holder.binding.imageHomeGame.context)
                     .load(uri)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -61,14 +63,6 @@ class HomePagerAdapter : RecyclerView.Adapter<HomePagerAdapter.PagerViewHolder>(
                     .into(holder.binding.imageHomeGame)
             }
             holder.binding.textHomeGame.text = item
-            /*
-            holder.binding.textHomeGame.text = description
-            val textfile = imageRef.child("description.txt")
-            val localfile = File.createTempFile("description.txt","txt")
-            textfile.getFile(localfile).addOnSuccessListener {
-                description = localfile.readText()
-                holder.binding.textHomeGame.text = description
-            }*/
         }
 
         gameFav.get().addOnSuccessListener {
@@ -81,6 +75,25 @@ class HomePagerAdapter : RecyclerView.Adapter<HomePagerAdapter.PagerViewHolder>(
                     holder.binding.favorite.setImageResource(R.drawable.favorite_border)
                 }
                 holder.binding.favoriteNumber.text = favorite.size.toString()
+            }
+        }
+
+        gameRat.get().addOnSuccessListener {
+            ratingDto = it.toObject(RatingDto::class.java)!!
+
+            with(ratingDto) {
+                var sum = 0F
+                for(rat in rating) {
+                    sum += rat.value
+                }
+
+                if(rating.isEmpty())
+                    binding.imageView.setImageResource(R.drawable.star2)
+
+                else {
+                    binding.rating.text = (sum / rating.size).toString()
+                    binding.ratingCount.text = "(${rating.size})"
+                }
             }
         }
 

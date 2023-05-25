@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var homeFragment: HomeFragment
     private lateinit var findFragment: FindFragment
     private lateinit var myPageFragment: MyPageFragment
+    private lateinit var reviewFragment: ReviewFragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         homeFragment = HomeFragment()
         findFragment = FindFragment()
         myPageFragment = MyPageFragment()
+        reviewFragment = ReviewFragment()
 
         if (Firebase.auth.currentUser == null) {
             startActivity(Intent(this, LoginActivity::class.java))
@@ -36,6 +38,7 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.action_home -> setCurrentFragment(R.id.main_container, homeFragment)
                 R.id.action_find -> setCurrentFragment(R.id.main_container, findFragment)
+                R.id.action_review -> setCurrentFragment(R.id.main_container, reviewFragment)
                 R.id.action_mypage -> setCurrentFragment(R.id.main_container, myPageFragment)
             }
             return@setOnItemSelectedListener true
