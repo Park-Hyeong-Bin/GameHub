@@ -1,8 +1,11 @@
 package com.example.gamehub
 
 import android.annotation.SuppressLint
+import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -58,6 +61,17 @@ class MyRatingAdapter(private val dataset: ArrayList<String>) : RecyclerView.Ada
                 holder.binding.avgrating.text = "평균 ★ " + sum / rating.size
             }
         }
+
+        val listener : View.OnClickListener = View.OnClickListener { v ->
+            val bundle = Bundle()
+            bundle.putString("id", item)
+            val mainActivity = v!!.context as AppCompatActivity
+            val gameFragment = GameFragment()
+            gameFragment.arguments = bundle
+            mainActivity.supportFragmentManager.beginTransaction().replace(R.id.main_container,gameFragment).commit()
+        }
+
+        holder.binding.card.setOnClickListener(listener)
 
         db.collection("user")
             .document(id)

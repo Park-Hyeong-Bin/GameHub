@@ -108,8 +108,7 @@ class HomePagerAdapter : RecyclerView.Adapter<HomePagerAdapter.PagerViewHolder>(
             mainActivity.supportFragmentManager.beginTransaction().replace(R.id.main_container,gameFragment).commit()
         }
 
-        holder.binding.imageHomeGame.setOnClickListener(listener)
-        holder.binding.textHomeGame.setOnClickListener(listener)
+        holder.binding.container.setOnClickListener(listener)
         holder.binding.favorite.setOnClickListener {
             favoriteEvent(holder)
         }

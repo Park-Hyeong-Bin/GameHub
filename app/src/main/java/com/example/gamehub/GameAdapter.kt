@@ -99,8 +99,7 @@ class GameAdapter(private val itemList: ArrayList<String>) :
             mainActivity.supportFragmentManager.beginTransaction().replace(R.id.main_container,gameFragment).commit()
         }
 
-        holder.binding.imageHomeGame.setOnClickListener(listener)
-        holder.binding.textHomeGame.setOnClickListener(listener)
+        holder.binding.card.setOnClickListener(listener)
         holder.binding.favorite.setOnClickListener {
             favoriteEvent(holder)
         }
