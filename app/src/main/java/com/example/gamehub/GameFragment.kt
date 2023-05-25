@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.gamehub.databinding.FragmentGameBinding
+import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.io.File
@@ -13,7 +15,7 @@ import java.io.File
 class GameFragment : Fragment() {
     private lateinit var binding: FragmentGameBinding
     private val storage = Firebase.storage
-
+    private val db = Firebase.firestore
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -25,12 +27,17 @@ class GameFragment : Fragment() {
         binding.textViewName.text = gameId
 
         val imageRef = storage.getReferenceFromUrl("gs://ghub-da878.appspot.com/$gameId")
+        /*
         val textfile = imageRef.child("description.txt")
         val localfile = File.createTempFile("description.txt","txt")
 
         textfile.getFile(localfile).addOnSuccessListener {
             val description = localfile.readText()
             binding.textViewDes.text = description
+        }*/
+
+        db.collection("game").document(gameId).get().addOnSuccessListener {
+            binding .textViewDes.text = it["description"].toString()
         }
 
         val itemlist: ArrayList<String> = arrayListOf("profile.PNG", "play_1.PNG", "play_2.PNG", "play_3.PNG")
