@@ -19,6 +19,7 @@ class MyPageFragment : Fragment() {
     private val id = FirebaseAuth.getInstance().currentUser?.email.toString()
     private lateinit var preferenceFragment: PreferenceFragment
     private lateinit var myArchiveFragment: MyArchiveFragment
+    private lateinit var myCommentsFragment: MyCommentsFragment
     private lateinit var myFavoriteFragment: MyFavoriteFragment
     private lateinit var binding: FragmentMypageBinding
     override fun onCreateView(
@@ -29,6 +30,7 @@ class MyPageFragment : Fragment() {
 
         preferenceFragment = PreferenceFragment()
         myArchiveFragment = MyArchiveFragment()
+        myCommentsFragment = MyCommentsFragment()
         myFavoriteFragment = MyFavoriteFragment()
 
         binding.logout.setOnClickListener {
@@ -46,12 +48,18 @@ class MyPageFragment : Fragment() {
             .document(id)
             .collection("rating")
             .get().addOnSuccessListener { documents ->
-                var count = 0
-                for (document in documents) {
-                    if(document.get("rating") != null)
-                        count ++
-                }
-                binding.ratingText.text = count.toString()
+                binding.ratingText.text = documents.size().toString()
+            }
+
+        binding.comment.setOnClickListener {
+            mainActivity.setCurrentFragment(R.id.main_container, myCommentsFragment)
+        }
+
+        db.collection("user")
+            .document(id)
+            .collection("comment")
+            .get().addOnSuccessListener { documents ->
+                binding.commentText.text = documents.size().toString()
             }
 
         binding.favorite.setOnClickListener {
@@ -62,12 +70,7 @@ class MyPageFragment : Fragment() {
             .document(id)
             .collection("favorite")
             .get().addOnSuccessListener { documents ->
-                var count = 0
-                for (document in documents) {
-                    if(document.get("state") != null)
-                        count ++
-                }
-                binding.favoriteText.text = count.toString()
+                binding.favoriteText.text = documents.size().toString()
             }
 
         binding.likeTag.setOnClickListener {

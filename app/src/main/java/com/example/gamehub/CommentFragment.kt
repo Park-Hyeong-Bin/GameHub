@@ -14,8 +14,11 @@ import com.google.firebase.ktx.Firebase
 
 class CommentFragment : Fragment() {
     private lateinit var binding: FragmentCommentBinding
+    private val id = FirebaseAuth.getInstance().currentUser?.email.toString()
     private val uid = FirebaseAuth.getInstance().currentUser?.uid.toString()
     private val db = Firebase.firestore
+    private lateinit var gameId: String
+    private lateinit var state: String
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -24,7 +27,8 @@ class CommentFragment : Fragment() {
     ): View {
         binding = FragmentCommentBinding.inflate(inflater, container, false)
 
-        val gameId = arguments?.getString("id").toString()
+        gameId = arguments?.getString("id").toString()
+        state = arguments?.getString("state").toString()
 
         db.collection("comment")
             .document(gameId)
@@ -40,29 +44,43 @@ class CommentFragment : Fragment() {
 
             map["comment"] = binding.comment.text.toString()
 
-            db.collection("comment")
+            db.collection("user")
+                .document(id)
+                .collection("comment")
                 .document(gameId)
-                .collection(uid)
-                .document("comment")
                 .set(map)
                 .addOnSuccessListener {
-                    val bundle = Bundle()
-                    bundle.putString("id", gameId)
-                    val mainActivity = context as AppCompatActivity
-                    val gameFragment = GameFragment()
-                    gameFragment.arguments = bundle
-                    mainActivity.supportFragmentManager.beginTransaction().replace(R.id.main_container,gameFragment).commit()
+                    db.collection("comment")
+                        .document(gameId)
+                        .collection(uid)
+                        .document("comment")
+                        .set(map)
+                        .addOnSuccessListener {
+                            dis()
+                        }
                 }
         }
 
         binding.cancel.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putString("id", gameId)
-            val mainActivity = context as AppCompatActivity
-            val gameFragment = GameFragment()
-            gameFragment.arguments = bundle
-            mainActivity.supportFragmentManager.beginTransaction().replace(R.id.main_container,gameFragment).commit()
+            dis()
         }
         return binding.root
+    }
+
+    private fun dis() {
+        val mainActivity = context as AppCompatActivity
+        when(state) {
+            "game" -> {
+                val bundle = Bundle()
+                bundle.putString("id", gameId)
+                val gameFragment = GameFragment()
+                gameFragment.arguments = bundle
+                mainActivity.supportFragmentManager.beginTransaction().replace(R.id.main_container,gameFragment).commit()
+            }
+            "mycomment" -> {
+                val myCommentsFragment = MyCommentsFragment()
+                mainActivity.supportFragmentManager.beginTransaction().replace(R.id.main_container,myCommentsFragment).commit()
+            }
+        }
     }
 }

@@ -98,6 +98,9 @@ class GameFragment : Fragment() {
 
         binding.editComment.setOnClickListener {
             val dialog = CommentDialogFragment(gameId)
+            val bundle = Bundle()
+            bundle.putString("state", "game")
+            dialog.arguments = bundle
             dialog.show(childFragmentManager, "comment")
         }
 
@@ -135,6 +138,7 @@ class GameFragment : Fragment() {
         binding.buttonComment.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("id", gameId)
+            bundle.putString("state", "game")
             val mainActivity = context as AppCompatActivity
             val commentFragment = CommentFragment()
             commentFragment.arguments = bundle

@@ -26,12 +26,14 @@
     <string name="edit_comment">코멘트 수정</string>
     <string name="delete_comment">코멘트 삭제</string>
     <string name="favorite">즐겨찾기</string>
+    <string name="archive">보관함</string>
     <string name="rating2">평가한</string>
     <string name="wish">하고싶어요</string>
     <string name="playing">하는중</string>
     <string name="tag">장르</string>
     <string name="like_tag">좋아한 장르</string>
     <string name="dislike_tag">싫어한 장르</string>
+    <string name="like">좋아요</string>
 
     <string-array name="tag">
         <item>CCG</item>
