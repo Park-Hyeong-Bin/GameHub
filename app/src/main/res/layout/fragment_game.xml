@@ -31,6 +31,7 @@
         android:id="@+id/textViewName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginStart="24dp"
         android:hint="title"
         android:textStyle="bold"
@@ -39,16 +40,39 @@
         app:layout_constraintTop_toBottomOf="@+id/indicator" />
 
     <TextView
+        android:id="@+id/mycomment"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"
+        android:hint="my comment"
+        android:maxLines="3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewName" />
+
+    <Button
+        android:id="@+id/edit_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/backwhite"
+        android:text="•••"
+        android:textSize="16dp"
+        android:textColor="#777777"
+        app:layout_constraintBottom_toBottomOf="@+id/mycomment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mycomment" />
+
+    <TextView
         android:id="@+id/textViewDes"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="12dp"
         android:layout_marginEnd="24dp"
         android:hint="description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewName" />
+        app:layout_constraintTop_toBottomOf="@+id/button_comment" />
 
     <TextView
         android:id="@+id/avgrating"
@@ -67,7 +91,7 @@
         style="@style/Widget.AppCompat.RatingBar.Indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:clickable="true"
         android:isIndicator="false"
         android:numStars="5"
@@ -75,13 +99,13 @@
         android:stepSize="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDes" />
+        app:layout_constraintTop_toBottomOf="@+id/mycomment" />
 
     <Button
         android:id="@+id/button_wish"
         android:layout_width="110dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
+        android:background="@color/backwhite"
         android:drawableTop="@drawable/add"
         android:text="@string/wish"
         android:textColor="@color/gray"
@@ -95,7 +119,7 @@
         android:id="@+id/button_comment"
         android:layout_width="110dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
+        android:background="@color/backwhite"
         android:drawableTop="@drawable/comment"
         android:text="@string/comment"
         android:textColor="@color/gray"
@@ -109,7 +133,7 @@
         android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:backgroundTint="@color/white"
+        android:background="@color/backwhite"
         android:drawableTop="@drawable/play"
         android:text="@string/playing"
         android:textColor="@color/gray"

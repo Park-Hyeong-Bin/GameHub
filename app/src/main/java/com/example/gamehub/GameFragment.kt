@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RatingBar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.example.gamehub.databinding.FragmentGameBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
@@ -79,6 +81,26 @@ class GameFragment : Fragment() {
                 }
             }
 
+        db.collection("comment")
+            .document(gameId)
+            .collection(uid)
+            .document("comment")
+            .get().addOnSuccessListener {
+                if(it.get("comment") != null) {
+                    binding.mycomment.text = "내 코멘트\n" + it.get("comment").toString()
+                }
+                else {
+                    binding.mycomment.isVisible = false
+                    binding.editComment.isVisible = false
+                    binding.editComment.isClickable = false
+                }
+            }
+
+        binding.editComment.setOnClickListener {
+            val dialog = CommentDialogFragment(gameId)
+            dialog.show(childFragmentManager, "comment")
+        }
+
         binding.buttonWish.setOnClickListener {
             val map = HashMap<String, Boolean>()
             map["state"] = true
@@ -108,6 +130,15 @@ class GameFragment : Fragment() {
                 binding.buttonWish.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.bookmark, 0, 0)
                 binding.buttonPlay.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.play, 0, 0)
             }
+        }
+
+        binding.buttonComment.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("id", gameId)
+            val mainActivity = context as AppCompatActivity
+            val commentFragment = CommentFragment()
+            commentFragment.arguments = bundle
+            mainActivity.supportFragmentManager.beginTransaction().replace(R.id.main_container,commentFragment).commit()
         }
 
         binding.buttonPlay.setOnClickListener {
