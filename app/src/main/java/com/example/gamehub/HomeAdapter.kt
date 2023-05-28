@@ -24,7 +24,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>(){
             {
                 val db = Firebase.firestore
                 val itemList2: ArrayList<String> = arrayListOf()
-
+                binding.tag.text = "추천게임"
                 binding.tag.text = item + binding.tag.text
 
                 if(item == "전체") {
