@@ -31,7 +31,6 @@
 
     <com.google.android.material.button.MaterialButtonToggleGroup
         android:id="@+id/btnsCategory"
-        tools:ignore="MissingConstraints"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
@@ -42,7 +41,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:selectionRequired="true"
-        app:singleSelection="true">
+        app:singleSelection="true"
+        tools:ignore="MissingConstraints">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_rating"
@@ -72,8 +72,10 @@
     <FrameLayout
         android:id="@+id/archive_container"
         android:layout_width="match_parent"
-        android:layout_height="600dp"
+        android:layout_height="0dp"
         android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnsCategory" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
