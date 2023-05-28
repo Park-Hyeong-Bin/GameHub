@@ -34,6 +34,11 @@ class HomePagerAdapter : RecyclerView.Adapter<HomePagerAdapter.PagerViewHolder>(
         return this
     }
 
+
+    init {
+        setHasStableIds(true)
+    }
+
     class PagerViewHolder( val binding: HomeItemBinding ) : RecyclerView.ViewHolder(binding.root)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagerViewHolder {
         binding = HomeItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -42,26 +47,25 @@ class HomePagerAdapter : RecyclerView.Adapter<HomePagerAdapter.PagerViewHolder>(
     }
     override fun getItemCount(): Int = itemList.size
 
-    override fun getItemViewType(position: Int): Int {
-        return position
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
     }
+
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: PagerViewHolder, position: Int) {
-        item = itemList[position]
 
+        item = itemList[position]
         gameFav = db.collection("favorite").document(item)
         gameRat = db.collection("rating").document(item)
 
         db.collection("game").document(item).get().addOnSuccessListener {
             val imageRef = storage.getReferenceFromUrl("gs://ghub-da878.appspot.com/$item")
             val path = imageRef.child("profile.PNG")
-
             path.downloadUrl.addOnSuccessListener { uri ->
                 Glide.with(holder.binding.imageHomeGame.context)
                     .load(uri)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
-
                     .into(holder.binding.imageHomeGame)
             }
             holder.binding.textHomeGame.text = item
@@ -85,13 +89,12 @@ class HomePagerAdapter : RecyclerView.Adapter<HomePagerAdapter.PagerViewHolder>(
 
             with(ratingDto) {
                 var sum = 0F
-                for(rat in rating) {
+                for (rat in rating) {
                     sum += rat.value
                 }
 
-                if(rating.isEmpty())
+                if (rating.isEmpty())
                     binding.imageView.setImageResource(R.drawable.star2)
-
                 else {
                     binding.rating.text = (sum / rating.size).toString()
                     binding.ratingCount.text = "(${rating.size})"
@@ -99,20 +102,24 @@ class HomePagerAdapter : RecyclerView.Adapter<HomePagerAdapter.PagerViewHolder>(
             }
         }
 
-        val listener :View.OnClickListener = View.OnClickListener { v ->
-            val bundle = Bundle()
-            bundle.putString("id", item)
-            val mainActivity = v!!.context as AppCompatActivity
-            val gameFragment = GameFragment()
-            gameFragment.arguments = bundle
-            mainActivity.supportFragmentManager.beginTransaction().replace(R.id.main_container,gameFragment).commit()
-        }
 
-        holder.binding.container.setOnClickListener(listener)
+        val bundle = Bundle()
+        bundle.putString("id", item)
+        val gameFragment = GameFragment()
+        gameFragment.arguments = bundle
+
+        holder.binding.container.setOnClickListener {
+            val mainActivity = it!!.context as AppCompatActivity
+            mainActivity.supportFragmentManager.beginTransaction()
+                .replace(R.id.main_container,gameFragment)
+                .addToBackStack(null)
+                .commit()
+        }
         holder.binding.favorite.setOnClickListener {
             favoriteEvent(holder)
         }
     }
+
 
     private fun favoriteEvent(holder: PagerViewHolder) {
         val map = HashMap<String, Boolean>()

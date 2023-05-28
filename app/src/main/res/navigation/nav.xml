@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav"
     app:startDestination="@id/homeFragment">
 
@@ -10,10 +11,13 @@
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_homeFragment_to_suggestFragment"
-            app:destination="@id/suggestFragment" />
+            app:destination="@id/findFragment" />
         <action
             android:id="@+id/action_homeFragment_to_myPageFragment"
             app:destination="@id/myPageFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_gameFragment"
+            app:destination="@id/gameFragment" />
     </fragment>
     <fragment
         android:id="@+id/myPageFragment"
@@ -24,25 +28,39 @@
             app:destination="@id/homeFragment" />
         <action
             android:id="@+id/action_myPageFragment_to_suggestFragment"
-            app:destination="@id/suggestFragment" />
+            app:destination="@id/findFragment" />
         <action
             android:id="@+id/action_myPageFragment_to_placeholder"
             app:destination="@id/placeholder" />
     </fragment>
     <fragment
-        android:id="@+id/suggestFragment"
+        android:id="@+id/findFragment"
         android:name="com.example.gamehub.FindFragment"
-        android:label="SuggestFragment" >
+        android:label="findFragment">
         <action
             android:id="@+id/action_suggestFragment_to_myPageFragment"
             app:destination="@id/myPageFragment" />
         <action
             android:id="@+id/action_suggestFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_findFragment_to_gameFragment"
+            app:destination="@id/gameFragment" />
     </fragment>
     <fragment android:id="@+id/placeholder" >
         <action
             android:id="@+id/action_placeholder_to_myPageFragment"
             app:destination="@id/myPageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gameFragment"
+        android:name="com.example.gamehub.GameFragment"
+        android:label="GameFragment" >
+        <action
+            android:id="@+id/action_gameFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_gameFragment_to_findFragment"
+            app:destination="@id/findFragment" />
     </fragment>
 </navigation>

@@ -31,6 +31,10 @@ class GameAdapter(private val itemList: ArrayList<String>) :
     private lateinit var gameRat: DocumentReference
     private lateinit var item: String
 
+    init {
+        setHasStableIds(true)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
         val binding = FavoriteItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return GameViewHolder(binding)
@@ -41,7 +45,6 @@ class GameAdapter(private val itemList: ArrayList<String>) :
         item = itemList[position]
         gameFav = db.collection("favorite").document(item)
         gameRat = db.collection("rating").document(item)
-
         val imageRef = storage.getReferenceFromUrl("gs://ghub-da878.appspot.com/$item")
         val path = imageRef.child("profile.PNG")
 
@@ -49,7 +52,6 @@ class GameAdapter(private val itemList: ArrayList<String>) :
             Glide.with(holder.binding.imageHomeGame.context)
                 .load(uri)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-
                 .into(holder.binding.imageHomeGame)
         }
         holder.binding.textHomeGame.text = item
@@ -90,16 +92,20 @@ class GameAdapter(private val itemList: ArrayList<String>) :
             favoriteEvent(holder)
         }
 
-        val listener : View.OnClickListener = View.OnClickListener { v ->
-            val bundle = Bundle()
-            bundle.putString("id", item)
-            val mainActivity = v!!.context as AppCompatActivity
-            val gameFragment = GameFragment()
-            gameFragment.arguments = bundle
-            mainActivity.supportFragmentManager.beginTransaction().replace(R.id.main_container,gameFragment).commit()
+
+        val bundle = Bundle()
+        bundle.putString("id", item)
+        val gameFragment = GameFragment()
+        gameFragment.arguments = bundle
+
+        holder.binding.card.setOnClickListener {
+            val mainActivity = it!!.context as AppCompatActivity
+            mainActivity.supportFragmentManager.beginTransaction()
+                .replace(R.id.main_container,gameFragment)
+                .addToBackStack(null)
+                .commit()
         }
 
-        holder.binding.card.setOnClickListener(listener)
         holder.binding.favorite.setOnClickListener {
             favoriteEvent(holder)
         }
@@ -130,5 +136,9 @@ class GameAdapter(private val itemList: ArrayList<String>) :
 
     override fun getItemCount(): Int {
         return itemList.size
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
     }
 }

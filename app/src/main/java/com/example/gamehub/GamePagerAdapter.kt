@@ -44,7 +44,6 @@ class GamePagerAdapter : RecyclerView.Adapter<GamePagerAdapter.PagerViewHolder>(
             Glide.with(holder.binding.image.context)
                 .load(uri)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .centerCrop()
                 .into(holder.binding.image)
         }
     }
