@@ -40,6 +40,8 @@ class MyPageFragment : Fragment() {
             startActivity(intent)
         }
 
+        binding.textMail.text = id
+
         binding.rating.setOnClickListener {
             mainActivity.setCurrentFragment(R.id.main_container, myArchiveFragment)
         }

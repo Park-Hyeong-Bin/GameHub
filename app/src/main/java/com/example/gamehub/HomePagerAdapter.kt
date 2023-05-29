@@ -56,20 +56,20 @@ class HomePagerAdapter : RecyclerView.Adapter<HomePagerAdapter.PagerViewHolder>(
     override fun onBindViewHolder(holder: PagerViewHolder, position: Int) {
 
         item = itemList[position]
+
         gameFav = db.collection("favorite").document(item)
         gameRat = db.collection("rating").document(item)
 
-        db.collection("game").document(item).get().addOnSuccessListener {
-            val imageRef = storage.getReferenceFromUrl("gs://ghub-da878.appspot.com/$item")
-            val path = imageRef.child("profile.PNG")
-            path.downloadUrl.addOnSuccessListener { uri ->
-                Glide.with(holder.binding.imageHomeGame.context)
-                    .load(uri)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(holder.binding.imageHomeGame)
-            }
-            holder.binding.textHomeGame.text = item
+        val imageRef = storage.getReferenceFromUrl("gs://ghub-da878.appspot.com/$item")
+        val path = imageRef.child("profile.PNG")
+        path.downloadUrl.addOnSuccessListener { uri ->
+            Glide.with(holder.binding.imageHomeGame.context)
+                .load(uri)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(holder.binding.imageHomeGame)
         }
+
+        holder.binding.textHomeGame.text = item
 
         gameFav.get().addOnSuccessListener {
             favoriteDto = it.toObject(FavoriteDto::class.java)!!
@@ -103,6 +103,8 @@ class HomePagerAdapter : RecyclerView.Adapter<HomePagerAdapter.PagerViewHolder>(
         }
 
 
+
+
         val bundle = Bundle()
         bundle.putString("id", item)
         val gameFragment = GameFragment()
@@ -118,6 +120,8 @@ class HomePagerAdapter : RecyclerView.Adapter<HomePagerAdapter.PagerViewHolder>(
         holder.binding.favorite.setOnClickListener {
             favoriteEvent(holder)
         }
+
+
     }
 
 
