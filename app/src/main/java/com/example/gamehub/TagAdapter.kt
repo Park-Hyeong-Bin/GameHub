@@ -6,9 +6,12 @@ import android.view.ViewGroup
 import android.widget.CompoundButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gamehub.databinding.TagItemBinding
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class TagAdapter : RecyclerView.Adapter<TagAdapter.ViewHolder>(){
     private var data = ArrayList<List<String>>()
+    val db = Firebase.firestore
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -43,7 +46,10 @@ class TagAdapter : RecyclerView.Adapter<TagAdapter.ViewHolder>(){
     inner class ViewHolder(private val binding: TagItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: List<String>) {
-            binding.gameTag.text = data[0]
+            //binding.gameTag.text = data[0]
+            db.collection("tag").document(data[0].lowercase()).get().addOnSuccessListener{
+                binding.gameTag.text = it["name"].toString()
+            }
             binding.gameTag.isChecked = data[1] == "1"
             binding.gameTag.setOnClickListener {
                 val pos = adapterPosition

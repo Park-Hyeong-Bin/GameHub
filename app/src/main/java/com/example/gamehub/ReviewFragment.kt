@@ -69,7 +69,7 @@ class ReviewFragment  : Fragment() {
                 gameList = arrayListOf()
 
                 db.collection("game")
-                    .whereEqualTo("tag", tagList[position]).get()
+                    .whereArrayContains("tag", tagList[position]).get()
                     .addOnSuccessListener { documents ->
                         for (document in documents) {
                             gameList.add(document.id)

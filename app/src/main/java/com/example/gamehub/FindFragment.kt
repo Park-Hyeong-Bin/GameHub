@@ -68,6 +68,7 @@ class FindFragment : Fragment() {
                     }
                 }
                 binding.gameView.adapter = GameAdapter(itemList)
+
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)
@@ -81,7 +82,7 @@ class FindFragment : Fragment() {
         val sQ = searchQuery.substring(1).uppercase(Locale.ROOT)
 
         db.collection("game")
-            .whereEqualTo("tag", sQ)
+            .whereArrayContains("tag", sQ)
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
