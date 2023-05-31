@@ -25,9 +25,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>(){
                 val db = Firebase.firestore
                 val itemList2: ArrayList<String> = arrayListOf()
                 binding.tag.text = "추천게임"
-
-
-                //binding.tag.text = item + binding.tag.text
+                binding.tag.text = item + binding.tag.text
 
                 binding.pager.adapter =HomePagerAdapter().build(itemList2)
 
@@ -42,7 +40,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>(){
                             binding.pager.adapter = HomePagerAdapter().build(itemList2)
                             binding.indicator.setViewPager(binding.pager)
 
-                            binding.tag.text = "전체 " + binding.tag.text
+
                         }.addOnFailureListener {
                         }
                 }
@@ -56,10 +54,6 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>(){
 
                             binding.pager.adapter = HomePagerAdapter().build(itemList2)
                             binding.indicator.setViewPager(binding.pager)
-
-                            db.collection("tag").document(item.lowercase()).get().addOnSuccessListener{
-                                binding.tag.text = it["name"].toString() + " " + binding.tag.text
-                            }
 
                         }.addOnFailureListener {
                             println("HOME ADAPTER FAILED")

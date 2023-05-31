@@ -46,10 +46,7 @@ class TagAdapter : RecyclerView.Adapter<TagAdapter.ViewHolder>(){
     inner class ViewHolder(private val binding: TagItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: List<String>) {
-            //binding.gameTag.text = data[0]
-            db.collection("tag").document(data[0].lowercase()).get().addOnSuccessListener{
-                binding.gameTag.text = it["name"].toString()
-            }
+            binding.gameTag.text = data[0]
             binding.gameTag.isChecked = data[1] == "1"
             binding.gameTag.setOnClickListener {
                 val pos = adapterPosition
