@@ -208,6 +208,15 @@ class GameFragment : Fragment() {
                 .document(gameId)
                 .set(ratingDto)
         }
+
+
+
+
+
         return binding.root
     }
+
+
 }
+
+

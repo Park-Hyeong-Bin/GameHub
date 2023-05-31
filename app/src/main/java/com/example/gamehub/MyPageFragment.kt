@@ -41,6 +41,9 @@ class MyPageFragment : Fragment() {
         }
 
         binding.textMail.text = id
+        db.collection("user").document(id).get().addOnSuccessListener {
+            binding.textName.text = it["name"].toString()
+        }
 
         binding.rating.setOnClickListener {
             mainActivity.setCurrentFragment(R.id.main_container, myArchiveFragment)
