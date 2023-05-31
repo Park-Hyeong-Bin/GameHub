@@ -37,6 +37,7 @@ class FindFragment : Fragment() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
                     if(query.substring(0 until 1) == "#")
+
                         searchTag(query)
                     else
                         searchGames(query)
@@ -79,21 +80,42 @@ class FindFragment : Fragment() {
     private fun searchTag(searchQuery: String) {
         itemList.clear()
 
-        val sQ = searchQuery.substring(1).uppercase(Locale.ROOT)
+        var sQ = searchQuery.substring(1).uppercase(Locale.ROOT)
 
-        db.collection("game")
-            .whereArrayContains("tag", sQ)
-            .get()
-            .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    itemList.add(document.id)
+        db.collection("tag").whereEqualTo("name",sQ)
+            .get().addOnSuccessListener { result ->
+                for(document in result){
+                    val tag = document["tag"].toString()
+                    val name = document["name"].toString()
+                    if(sQ == name){
+                        sQ = tag
+                    }
                 }
-                binding.gameView.adapter = GameAdapter(itemList)
-            }
-            .addOnFailureListener { exception ->
-                Log.w(TAG, "Error getting documents: ", exception)
-            }
+
+                db.collection("game")
+                    .whereArrayContains("tag", sQ)
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        for (document in documents) {
+                            itemList.add(document.id)
+                        }
+                        binding.gameView.adapter = GameAdapter(itemList)
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.w(TAG, "Error getting documents: ", exception)
+                    }
+
+        }
+
+
+
+
+
+
+
     }
+
+
 
     companion object {
         private const val TAG = "FindFragment"
