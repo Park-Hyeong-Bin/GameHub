@@ -41,9 +41,9 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>(){
                 }
                 else {
                     db.collection("game")
-                        .whereEqualTo("tag", item).get()
-                        .addOnSuccessListener { documents ->
-                            for (document in documents) {
+                        .whereArrayContains("tag", item).get()
+                        .addOnSuccessListener {documents ->
+                            for (document in documents)  {
                                 itemList2.add(document.id)
                             }
                             binding.pager.adapter = HomePagerAdapter().build(itemList2)
