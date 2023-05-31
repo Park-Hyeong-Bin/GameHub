@@ -1,6 +1,8 @@
 package com.example.gamehub
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -210,7 +212,14 @@ class GameFragment : Fragment() {
         }
 
 
-
+        binding.buttonURL.setOnClickListener {
+            db.collection("game").document(gameId).get().addOnSuccessListener {
+                val url = it["URL"].toString()
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                val mainActivity = context as AppCompatActivity
+                mainActivity.startActivity(intent)
+            }
+        }
 
 
         return binding.root
