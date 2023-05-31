@@ -50,7 +50,11 @@ class MyPageFragment : Fragment() {
             .document(id)
             .collection("rating")
             .get().addOnSuccessListener { documents ->
-                binding.ratingText.text = documents.size().toString()
+                var count = 0
+                for(document in documents)
+                    if(document.get("rating") != null)
+                        count ++
+                binding.ratingText.text = count.toString()
             }
 
         binding.comment.setOnClickListener {
@@ -61,7 +65,11 @@ class MyPageFragment : Fragment() {
             .document(id)
             .collection("comment")
             .get().addOnSuccessListener { documents ->
-                binding.commentText.text = documents.size().toString()
+                var count = 0
+                for(document in documents)
+                    if(document.get("comment") != null)
+                        count ++
+                binding.commentText.text = count.toString()
             }
 
         binding.favorite.setOnClickListener {
@@ -72,7 +80,11 @@ class MyPageFragment : Fragment() {
             .document(id)
             .collection("favorite")
             .get().addOnSuccessListener { documents ->
-                binding.favoriteText.text = documents.size().toString()
+                var count = 0
+                for(document in documents)
+                    if(document.get("state") == true)
+                        count ++
+                binding.favoriteText.text = count.toString()
             }
 
         binding.likeTag.setOnClickListener {

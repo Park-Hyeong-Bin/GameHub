@@ -3,7 +3,6 @@ package com.example.gamehub
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -102,9 +101,6 @@ class HomePagerAdapter : RecyclerView.Adapter<HomePagerAdapter.PagerViewHolder>(
             }
         }
 
-
-
-
         val bundle = Bundle()
         bundle.putString("id", item)
         val gameFragment = GameFragment()
@@ -123,7 +119,6 @@ class HomePagerAdapter : RecyclerView.Adapter<HomePagerAdapter.PagerViewHolder>(
 
 
     }
-
 
     private fun favoriteEvent(holder: PagerViewHolder) {
         val map = HashMap<String, Boolean>()

@@ -17,6 +17,8 @@ class CommentFragment : Fragment() {
     private val id = FirebaseAuth.getInstance().currentUser?.email.toString()
     private val uid = FirebaseAuth.getInstance().currentUser?.uid.toString()
     private val db = Firebase.firestore
+    private var first = false
+    private lateinit var commentDto: CommentDto
     private lateinit var gameId: String
     private lateinit var state: String
 
@@ -29,32 +31,44 @@ class CommentFragment : Fragment() {
 
         gameId = arguments?.getString("id").toString()
         state = arguments?.getString("state").toString()
+        if(arguments?.getBoolean("first") == true) {
+            first = true
+            binding.textView.text = "코멘트 작성"
+        }
 
         db.collection("comment")
-            .document(gameId)
-            .collection(uid)
+            .document(uid)
+            .collection(gameId)
             .document("comment")
             .get().addOnSuccessListener {
-                if(it.get("comment") != null)
+                if(it.get("comment") != null) {
+                    commentDto = it.toObject(CommentDto::class.java)!!
                     binding.comment.setText(it.get("comment").toString())
+                }
+                else {
+                    commentDto = CommentDto()
+                }
             }
 
         binding.save.setOnClickListener {
-            val map = HashMap<String, String>()
+            commentDto.comment = binding.comment.text.toString()
+            commentDto.timestamp = System.currentTimeMillis()
 
-            map["comment"] = binding.comment.text.toString()
-
+            if(first) {
+                commentDto.uid = uid
+                commentDto.name = id
+                commentDto.favoriteDto = FavoriteDto()
+            }
             db.collection("user")
                 .document(id)
                 .collection("comment")
                 .document(gameId)
-                .set(map)
-                .addOnSuccessListener {
+                .set(commentDto).addOnSuccessListener {
                     db.collection("comment")
-                        .document(gameId)
-                        .collection(uid)
+                        .document(uid)
+                        .collection(gameId)
                         .document("comment")
-                        .set(map)
+                        .set(commentDto)
                         .addOnSuccessListener {
                             dis()
                         }

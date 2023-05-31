@@ -1,145 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/pager"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content" >
 
-    <me.relex.circleindicator.CircleIndicator3
-        android:id="@+id/indicator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:ci_drawable="@color/teal_700"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pager"
-        />
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textViewName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="24dp"
-        android:hint="title"
-        android:textStyle="bold"
-        android:textSize="24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/indicator" />
+        <me.relex.circleindicator.CircleIndicator3
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ci_drawable="@color/teal_700"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pager" />
 
-    <TextView
-        android:id="@+id/mycomment"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="24dp"
-        android:hint="my comment"
-        android:maxLines="3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewName" />
+        <TextView
+            android:id="@+id/textViewName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="24dp"
+            android:hint="title"
+            android:textStyle="bold"
+            android:textSize="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/indicator" />
 
-    <Button
-        android:id="@+id/edit_comment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/backwhite"
-        android:text="•••"
-        android:textSize="16dp"
-        android:textColor="#777777"
-        app:layout_constraintBottom_toBottomOf="@+id/mycomment"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/mycomment" />
+        <TextView
+            android:id="@+id/mycomment"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="24dp"
+            android:hint="my comment"
+            android:maxLines="3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewName" />
 
-    <TextView
-        android:id="@+id/textViewDes"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:hint="description"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_comment" />
+        <Button
+            android:id="@+id/edit_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/backwhite"
+            android:text="•••"
+            android:textSize="16dp"
+            android:textColor="#777777"
+            app:layout_constraintBottom_toBottomOf="@+id/mycomment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/mycomment" />
 
-    <TextView
-        android:id="@+id/avgrating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:hint="rating"
-        android:textStyle="bold"
-        android:textSize="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewName"
-        app:layout_constraintStart_toEndOf="@+id/textViewName"
-        app:layout_constraintTop_toTopOf="@+id/textViewName" />
+        <TextView
+            android:id="@+id/textViewDes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:hint="description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_comment" />
 
-    <RatingBar
-        android:id="@+id/ratingbarStyle"
-        style="@style/Widget.AppCompat.RatingBar.Indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:clickable="true"
-        android:isIndicator="false"
-        android:numStars="5"
-        android:progressTint="#333333"
-        android:stepSize="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mycomment" />
+        <TextView
+            android:id="@+id/avgrating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:hint="rating"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewName"
+            app:layout_constraintStart_toEndOf="@+id/textViewName"
+            app:layout_constraintTop_toTopOf="@+id/textViewName" />
 
-    <Button
-        android:id="@+id/button_wish"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:background="@color/backwhite"
-        android:drawableTop="@drawable/add"
-        android:text="@string/wish"
-        android:textColor="@color/gray"
-        android:layout_marginTop="24dp"
-        android:layout_marginStart="24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ratingbarStyle"
-        tools:ignore="MissingConstraints" />
+        <RatingBar
+            android:id="@+id/ratingbarStyle"
+            style="@style/Widget.AppCompat.RatingBar.Indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:clickable="true"
+            android:isIndicator="false"
+            android:numStars="5"
+            android:progressTint="#333333"
+            android:stepSize="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mycomment" />
 
-    <Button
-        android:id="@+id/button_comment"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:background="@color/backwhite"
-        android:drawableTop="@drawable/comment"
-        android:text="@string/comment"
-        android:textColor="@color/gray"
-        app:layout_constraintEnd_toStartOf="@+id/button_play"
-        app:layout_constraintStart_toEndOf="@+id/button_wish"
-        app:layout_constraintTop_toTopOf="@+id/button_wish"
-        tools:ignore="MissingConstraints" />
+        <Button
+            android:id="@+id/button_wish"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:background="@color/backwhite"
+            android:drawableTop="@drawable/add"
+            android:text="@string/wish"
+            android:textColor="@color/gray"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ratingbarStyle"
+            tools:ignore="MissingConstraints" />
 
-    <Button
-        android:id="@+id/button_play"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:background="@color/backwhite"
-        android:drawableTop="@drawable/play"
-        android:text="@string/playing"
-        android:textColor="@color/gray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button_comment"
-        tools:ignore="MissingConstraints" />
+        <Button
+            android:id="@+id/button_comment"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:background="@color/backwhite"
+            android:drawableTop="@drawable/comment"
+            android:text="@string/comment"
+            android:textColor="@color/gray"
+            app:layout_constraintEnd_toStartOf="@+id/button_play"
+            app:layout_constraintStart_toEndOf="@+id/button_wish"
+            app:layout_constraintTop_toTopOf="@+id/button_wish"
+            tools:ignore="MissingConstraints" />
 
+        <Button
+            android:id="@+id/button_play"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:background="@color/backwhite"
+            android:drawableTop="@drawable/play"
+            android:text="@string/playing"
+            android:textColor="@color/gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/button_comment"
+            tools:ignore="MissingConstraints" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@+id/textViewDes" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

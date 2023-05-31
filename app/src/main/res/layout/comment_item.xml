@@ -12,7 +12,6 @@
         android:layout_margin="8dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="4dp"
-        android:backgroundTint="#EEEEEE"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints"
@@ -23,45 +22,39 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="user_name"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
                 <ImageView
                     android:id="@+id/imageHomeGame"
                     android:layout_width="190dp"
                     android:layout_height="110dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/name"
                     app:srcCompat="?attr/selectableItemBackground" />
 
-                <TextView
-                    android:id="@+id/textHomeGame"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:gravity="start"
-                    android:hint="gamename"
-                    android:singleLine="false"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageHomeGame"
-                    app:layout_constraintTop_toTopOf="@+id/imageHomeGame" />
-
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/state"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:backgroundTint="@color/white"
                     app:cardCornerRadius="2dp"
-                    app:layout_constraintBottom_toTopOf="@+id/textHomeGame"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:background="#EEEEEE"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
@@ -83,14 +76,51 @@
                 </androidx.cardview.widget.CardView>
 
                 <TextView
+                    android:id="@+id/textHomeGame"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:gravity="start"
+                    android:hint="gamename"
+                    android:singleLine="false"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageHomeGame"
+                    app:layout_constraintTop_toTopOf="@+id/imageHomeGame" />
+
+                <TextView
                     android:id="@+id/comment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:hint="comment"
-                    android:maxLines="6"
+                    android:maxLines="4"
                     app:layout_constraintStart_toStartOf="@+id/textHomeGame"
                     app:layout_constraintTop_toBottomOf="@+id/textHomeGame" />
+
+                <ImageButton
+                    android:id="@+id/favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/imageHomeGame"
+                    app:layout_constraintTop_toBottomOf="@+id/imageHomeGame"
+                    app:srcCompat="@drawable/favorite_border" />
+
+                <TextView
+                    android:id="@+id/favorite_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="1dp"
+                    android:text="0"
+                    app:layout_constraintBottom_toBottomOf="@+id/favorite"
+                    app:layout_constraintStart_toEndOf="@+id/favorite"
+                    app:layout_constraintTop_toTopOf="@+id/favorite" />
 
                 <Button
                     android:id="@+id/edit_comment"
@@ -102,6 +132,5 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

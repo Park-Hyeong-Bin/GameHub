@@ -36,8 +36,8 @@ class CommentDialogFragment(gameId : String) : DialogFragment() {
 
         binding.delete.setOnClickListener {
             db.collection("comment")
-                .document(gamename)
-                .collection(uid)
+                .document(uid)
+                .collection(gamename)
                 .document("comment")
                 .delete()
 

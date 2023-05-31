@@ -20,6 +20,8 @@ class GameFragment : Fragment() {
     private val uid = FirebaseAuth.getInstance().currentUser?.uid.toString()
     private val db = Firebase.firestore
     private lateinit var ratingDto : RatingDto
+    private lateinit var commentDto: CommentDto
+    private lateinit var commentlist: ArrayList<CommentDto>
     private var wish = false
     private var play = false
 
@@ -82,8 +84,8 @@ class GameFragment : Fragment() {
             }
 
         db.collection("comment")
-            .document(gameId)
-            .collection(uid)
+            .document(uid)
+            .collection(gameId)
             .document("comment")
             .get().addOnSuccessListener {
                 if(it.get("comment") != null) {
@@ -95,6 +97,15 @@ class GameFragment : Fragment() {
                     binding.editComment.isClickable = false
                 }
             }
+
+        db.collectionGroup(gameId).get().addOnSuccessListener { documents ->
+            commentlist = arrayListOf()
+            for (document in documents) {
+                commentDto = document.toObject(CommentDto::class.java)
+                commentlist.add(commentDto)
+            }
+            binding.comment.adapter = CommentListAdapter(gameId, commentlist)
+        }
 
         binding.editComment.setOnClickListener {
             val dialog = CommentDialogFragment(gameId)
@@ -138,6 +149,8 @@ class GameFragment : Fragment() {
         binding.buttonComment.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("id", gameId)
+            if(!binding.mycomment.isVisible)
+                bundle.putBoolean("first", true)
             bundle.putString("state", "game")
             val mainActivity = context as AppCompatActivity
             val commentFragment = CommentFragment()

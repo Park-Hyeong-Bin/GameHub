@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -44,12 +45,17 @@ class MyCommentsAdapter(private val dataset: ArrayList<String>, private val frag
         }
         holder.binding.textHomeGame.text = item
 
+        holder.binding.name.text = id
+
+        holder.binding.state.isVisible = false
+
         db.collection("user")
             .document(id)
             .collection("wish")
             .document(item)
             .get().addOnSuccessListener {
                 if(it.get("state") != null) {
+                    holder.binding.state.isVisible = true
                     holder.binding.stateimg.setImageResource(R.drawable.bookmark)
                     holder.binding.statetxt.text = "하고싶어요"
                 }
@@ -61,6 +67,7 @@ class MyCommentsAdapter(private val dataset: ArrayList<String>, private val frag
             .document(item)
             .get().addOnSuccessListener {
                 if(it.get("state") != null) {
+                    holder.binding.state.isVisible = true
                     holder.binding.stateimg.setImageResource(R.drawable.play)
                     holder.binding.statetxt.text = "하는중"
                 }
