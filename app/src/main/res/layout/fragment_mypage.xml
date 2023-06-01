@@ -120,7 +120,7 @@
 
     <Button
         android:id="@+id/like_tag"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginTop="8dp"
@@ -136,16 +136,18 @@
 
     <Button
         android:id="@+id/dilike_tag"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="12dp"
         android:backgroundTint="@color/white"
         android:drawableRight="@drawable/arrow"
         android:text="@string/dislike_tag"
         android:textAlignment="textStart"
         android:textColor="@color/gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/like_tag" />
 
     <TextView
