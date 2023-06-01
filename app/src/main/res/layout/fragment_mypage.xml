@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/white"
+        android:lines="2"
+        android:text="추천 리스트 \n 갱신"
+        android:textColor="@color/gray"
+        app:layout_constraintBottom_toTopOf="@+id/imageView3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/logout"
@@ -21,8 +35,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0"
-        android:textStyle="bold"
         android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/rating"
         app:layout_constraintEnd_toEndOf="@+id/rating"
         app:layout_constraintStart_toStartOf="@+id/rating" />
@@ -44,8 +58,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0"
-        android:textStyle="bold"
         android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/comment"
         app:layout_constraintEnd_toEndOf="@+id/comment"
         app:layout_constraintStart_toStartOf="@+id/comment" />
@@ -55,8 +69,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/white"
-        android:textColor="#777777"
         android:text="@string/comment"
+        android:textColor="#777777"
         app:layout_constraintEnd_toStartOf="@+id/favorite"
         app:layout_constraintStart_toEndOf="@+id/rating"
         app:layout_constraintTop_toTopOf="@+id/rating" />
@@ -66,8 +80,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0"
-        android:textStyle="bold"
         android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/favorite"
         app:layout_constraintEnd_toEndOf="@+id/favorite"
         app:layout_constraintStart_toStartOf="@+id/favorite" />
@@ -78,8 +92,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:backgroundTint="@color/white"
-        android:textColor="#777777"
         android:text="@string/favorite"
+        android:textColor="#777777"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/comment" />
 
@@ -108,14 +122,14 @@
         android:id="@+id/like_tag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="12dp"
         android:backgroundTint="@color/white"
+        android:drawableRight="@drawable/arrow"
         android:text="@string/like_tag"
         android:textAlignment="textStart"
         android:textColor="@color/gray"
-        android:drawableRight="@drawable/arrow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/like" />
@@ -124,14 +138,14 @@
         android:id="@+id/dilike_tag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="12dp"
         android:backgroundTint="@color/white"
-        android:textAlignment="textStart"
-        android:text="@string/dislike_tag"
-        android:textColor="@color/gray"
         android:drawableRight="@drawable/arrow"
+        android:text="@string/dislike_tag"
+        android:textAlignment="textStart"
+        android:textColor="@color/gray"
         app:layout_constraintTop_toBottomOf="@+id/like_tag" />
 
     <TextView
@@ -147,15 +161,15 @@
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="0dp"
-        android:layout_height="181dp"
+        android:layout_width="362dp"
+        android:layout_height="131dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/comment"
         app:srcCompat="@drawable/logo_2" />
 
     <TextView

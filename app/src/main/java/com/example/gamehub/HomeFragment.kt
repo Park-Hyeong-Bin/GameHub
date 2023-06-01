@@ -16,6 +16,7 @@ class HomeFragment : Fragment() {
     private val db = Firebase.firestore
     private val id = FirebaseAuth.getInstance().currentUser?.email
     private lateinit var  itemList : ArrayList<String>
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -25,13 +26,13 @@ class HomeFragment : Fragment() {
         binding.RecyclerViewHome.layoutManager = LinearLayoutManager(context)
 
         itemList = arrayListOf()
-
         db.collection("user")
             .document(id.toString())
             .collection("positive_tag")
             .whereEqualTo("state", true)
             .get().addOnSuccessListener { documents ->
                 itemList.add("전체")
+                itemList.add("추천")
                 if(!documents.isEmpty) {
                     for (document in documents) {
                         itemList.add(document.id)

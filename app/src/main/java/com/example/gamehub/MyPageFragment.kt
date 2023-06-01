@@ -12,6 +12,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class MyPageFragment : Fragment() {
     private lateinit var mainActivity: MainActivity
@@ -22,6 +29,7 @@ class MyPageFragment : Fragment() {
     private lateinit var myCommentsFragment: MyCommentsFragment
     private lateinit var myFavoriteFragment: MyFavoriteFragment
     private lateinit var binding: FragmentMypageBinding
+    private lateinit var  pointList : MutableMap<String,Int>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -106,11 +114,125 @@ class MyPageFragment : Fragment() {
             mainActivity.setCurrentFragment(R.id.main_container, preferenceFragment)
         }
 
+        pointList = mutableMapOf()
+
+        binding.refresh.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                refresh()
+                delay(300)
+                withContext(Dispatchers.Main) {
+                    for (i in pointList) {
+                        db.collection("user").document(id).collection("tag_point")
+                            .document(i.key).set(i)
+                    }
+                }
+            }
+        }
+
         return binding.root
+    }
+
+    private suspend fun refresh(){
+        db.collection("tag").get().addOnSuccessListener {documents ->
+            for(document in documents){
+                pointList[document.id.uppercase()] = 0
+            }
+            db.collection("user").document(id.toString()).collection("positive_tag").whereEqualTo("state", true)
+                .get().addOnSuccessListener{result ->
+                    for (document in result) {
+                        val temp = pointList[document.id]
+                        if (temp != null) {
+                            pointList[document.id] = temp + 3
+                        }
+                    }
+                }
+            db.collection("user").document(id.toString()).collection("negative_tag").whereEqualTo("state", true)
+                .get().addOnSuccessListener{result ->
+                    for (document in result) {
+                        val temp = pointList[document.id]
+                        if (temp != null) {
+                            pointList[document.id] = temp + -5
+                        }
+                    }
+                }
+
+            db.collection("user").document(id.toString()).collection("play").whereEqualTo("state",true)
+                .get().addOnSuccessListener{result ->
+                    for (document in result) {
+                        db.collection("game").document(document.id).get().addOnSuccessListener {
+                            val tagList = it["tag"] as List<*>
+                            for(i in tagList){
+                                val temp = pointList[i]
+                                if (temp != null) {
+                                    pointList[i.toString()] = temp + 5
+                                }
+                            }
+                        }
+
+                    }
+                }
+            db.collection("user").document(id.toString()).collection("wish").whereEqualTo("state",true)
+                .get().addOnSuccessListener{result ->
+                    for (document in result) {
+                        db.collection("game").document(document.id).get().addOnSuccessListener {
+                            val tagList = it["tag"] as List<*>
+                            for(i in tagList){
+                                val temp = pointList[i]
+                                if (temp != null) {
+                                    pointList[i.toString()] = temp + 3
+                                }
+                            }
+                        }
+
+                    }
+                }
+            db.collection("user").document(id.toString()).collection("rating")
+                .get().addOnSuccessListener{result ->
+                    for (document in result) {
+                        if(document.exists()){
+                            val rating =  document["rating"]
+                            db.collection("game").document(document.id).get().addOnSuccessListener {
+                                val tagList = it["tag"] as List<*>
+                                for(i in tagList){
+                                    val temp = pointList[i]
+                                    if (temp != null) {
+                                        when(rating){
+                                            1.0 -> pointList[i.toString()] = temp + -5
+                                            2.0 -> pointList[i.toString()] = temp + -3
+                                            4.0 -> pointList[i.toString()] = temp + 3
+                                            5.0 -> pointList[i.toString()] = temp + 5
+                                        }
+                                    }
+                                }
+                            }
+
+
+                        }
+
+                    }
+                }
+            db.collection("user").document(id.toString()).collection("favorite").whereEqualTo("state",true)
+                .get().addOnSuccessListener{result ->
+                    for (document in result) {
+                        db.collection("game").document(document.id).get().addOnSuccessListener {
+                            val tagList = it["tag"] as List<*>
+                            for(i in tagList){
+                                val temp = pointList[i]
+                                if (temp != null) {
+                                    pointList[i.toString()] = temp + 3
+                                }
+                            }
+                        }
+
+                    }
+                }
+
+        }.await()
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
     }
+
 }
