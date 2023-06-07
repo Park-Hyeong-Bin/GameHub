@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.RatingBar
 import androidx.appcompat.app.AppCompatActivity
@@ -97,6 +98,34 @@ class GameFragment : Fragment() {
                     binding.mycomment.isVisible = false
                     binding.editComment.isVisible = false
                     binding.editComment.isClickable = false
+                }
+            }
+
+        db.collection("user")
+            .document(id)
+            .collection("positive_tag")
+            .get().addOnSuccessListener { documents ->
+                for (document in documents) {
+                    if (document.get("state") == true) {
+                        db.collection("game")
+                            .whereArrayContains("tag", document.id)
+                            .get().addOnSuccessListener { documents2 ->
+                                for (document2 in documents2) {
+                                    if (document2.id == gameId) {
+                                        print(document2.id)
+                                        if(binding.textreson.text == "")
+                                            binding.textreson.text = "선호하는 태그 #" + document.id
+                                        else
+                                            binding.textreson.text = binding.textreson.text.toString() + ", " + document.id
+                                    }
+                                }
+                            }
+                    }
+                }
+                if(binding.textreson.text == "") {
+                    binding.textreson.visibility = GONE
+                    binding.line1.visibility = GONE
+                    binding.reson.visibility = GONE
                 }
             }
 

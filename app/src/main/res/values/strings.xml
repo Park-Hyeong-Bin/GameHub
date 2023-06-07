@@ -34,6 +34,8 @@
     <string name="like_tag">좋아한 장르</string>
     <string name="dislike_tag">싫어한 장르</string>
     <string name="like">좋아요</string>
+    <string name="Destitle">기본정보</string>
+    <string name="reson">내가 좋아할 이유</string>
 
     <string-array name="tag">
         <item>CCG</item>

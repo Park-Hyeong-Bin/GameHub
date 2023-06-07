@@ -35,19 +35,6 @@ class CommentDetailFragment(commentDto: CommentDto) : DialogFragment() {
 
         db.collection("user")
             .document(commentdto.name)
-            .collection("rating")
-            .document(gameId)
-            .get().addOnSuccessListener {
-                if(it.get("rating") != null) {
-                    binding.rating.isVisible = true
-                    val value = it.get("rating").toString()
-                    val rat = value.toFloat()
-                    binding.rating.rating = rat
-                }
-            }
-
-        db.collection("user")
-            .document(commentdto.name)
             .collection("wish")
             .document(gameId)
             .get().addOnSuccessListener {
@@ -67,6 +54,19 @@ class CommentDetailFragment(commentDto: CommentDto) : DialogFragment() {
                     binding.state.isVisible = true
                     binding.stateimg.setImageResource(R.drawable.play)
                     binding.statetxt.text = "하는중"
+                }
+            }
+
+        db.collection("user")
+            .document(commentdto.name)
+            .collection("rating")
+            .document(gameId)
+            .get().addOnSuccessListener {
+                if(it.get("rating") != null) {
+                    binding.rating.isVisible = true
+                    val value = it.get("rating").toString()
+                    val rat = value.toFloat()
+                    binding.rating.rating = rat
                 }
             }
 
@@ -94,7 +94,6 @@ class CommentDetailFragment(commentDto: CommentDto) : DialogFragment() {
                 .addToBackStack(null)
                 .commit()
         }
-
         return binding.root
     }
 
