@@ -143,13 +143,16 @@ gradlew.bat build
 
 - `app/src/main/AndroidManifest.xml`
 
+## 기여자
+
+- [Park Hyeong-Bin](https://github.com/Park-Hyeong-Bin)
+- [sbjiwan](https://github.com/sbjiwan)
+- [insu57](https://github.com/insu57)
+- [agbrgh](https://github.com/agbrgh)
+
 ## 라이선스
 
 현재 저장소에는 라이선스 파일이 명시적으로 포함되어 있지 않습니다. 공개 배포, 상업적 활용, 또는 다른 프로젝트에서의 재사용을 원한다면 라이선스 추가를 권장합니다.
-
-## 기여자
-
-- Park Hyeong-Bin
 
 ## 참고
 
